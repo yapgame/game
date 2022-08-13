@@ -47,6 +47,10 @@
     "@mui/material": "5.9.3",
     "@types/react": "18.0.15",
     "@types/react-dom": "18.0.6",
+    "autoprefixer": "10.4.8",
+    "mini-css-extract-plugin": "2.6.1",
+    "postcss-loader": "7.0.1",
+    "postcss-nested": "5.0.6",
     "react": "18.2.0",
     "react-dom": "18.2.0"
   }
