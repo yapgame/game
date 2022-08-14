@@ -3,7 +3,7 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Container from '@mui/material/Container';
 
-export default function TabPanel() {
+function TabPanel() {
   const [value, setValue] = React.useState(2);
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
@@ -21,3 +21,5 @@ export default function TabPanel() {
     </Container>
   );
 }
+
+export default TabPanel;

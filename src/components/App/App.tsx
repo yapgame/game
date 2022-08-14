@@ -8,6 +8,9 @@ import InternalServerError from '../Errors/InternalServerError';
 import TabPanel from '../Tabs/Tabs';
 import Logo from '../Logo/Logo';
 import Footer from '../Footer/Footer';
+import SignUp from '../PageSign/SignUp';
+import SignIn from '../PageSign/SignIn';
+import Profile from '../Profile/Profile';
 
 function App() {
   return (
@@ -19,6 +22,9 @@ function App() {
       <PageStart />
       <NotFound />
       <InternalServerError />
+      <SignUp />
+      <SignIn />
+      <Profile />
       <Footer />
     </>
   );
