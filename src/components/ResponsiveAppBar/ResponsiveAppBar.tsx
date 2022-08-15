@@ -1,79 +1,36 @@
 import * as React from 'react';
+import { NavLink } from 'react-router-dom';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import Menu from '@mui/material/Menu';
-// import MenuIcon from '@mui/icons-material/Menu';
+import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 // import AdbIcon from '@mui/icons-material/Adb';
-import {
-  SIGNUP_URL,
-  SIGNIN_URL,
-  PROFILE_URL,
-  LOGOUT_URL,
-  PLAY_URL,
-  LEADERBOARD_URL,
-  TEAM_URL,
-} from '../../utils/constants';
-
-const pages: any = [
-  {
-    name: 'Play',
-    url: PLAY_URL,
-  },
-  {
-    name: 'Leaderboard',
-    url: LEADERBOARD_URL,
-  },
-  {
-    name: 'Team',
-    url: TEAM_URL,
-  },
-];
-const settings: any = [
-  {
-    name: 'Profile',
-    url: PROFILE_URL,
-  },
-  {
-    name: 'Logout',
-    url: LOGOUT_URL,
-  },
-  {
-    name: 'SignUp',
-    url: SIGNUP_URL,
-  },
-  {
-    name: 'SignIn',
-    url: SIGNIN_URL,
-  },
-];
+import { mainMenu } from './mainMenu';
+import { userMenu } from './userMenu';
 
 function ResponsiveAppBar() {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
-
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
   };
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
   };
-
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
   };
-
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
-
   return (
     <AppBar position="static">
       <Container maxWidth="xl">
@@ -106,7 +63,7 @@ function ResponsiveAppBar() {
               onClick={handleOpenNavMenu}
               color="inherit"
             >
-              {/* <MenuIcon /> */}
+              <MenuIcon />
             </IconButton>
             <Menu
               id="menu-appbar"
@@ -126,14 +83,26 @@ function ResponsiveAppBar() {
                 display: { xs: 'block', md: 'none' },
               }}
             >
-              {pages.map((page: Record<string, string>) => (
-                <MenuItem key={page.name} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">
-                    {page.name}
-                    {page.url}
-                  </Typography>
-                  123
-                </MenuItem>
+              {mainMenu.map((page: Record<string, string>) => (
+                <NavLink
+                  key={page.name}
+                  to={page.url}
+                  style={{
+                    margin: 0,
+                    fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
+                    fontWeight: 400,
+                    textDecoration: 'none',
+                    color: '#1A2027',
+                  }}
+                >
+                  <MenuItem key={page.name} onClick={handleCloseNavMenu}>
+                    <Typography
+                      textAlign="center"
+                    >
+                      {page.name}
+                    </Typography>
+                  </MenuItem>
+                </NavLink>
               ))}
             </Menu>
           </Box>
@@ -154,16 +123,26 @@ function ResponsiveAppBar() {
               textDecoration: 'none',
             }}
           >
-            LOGO
+            CROCO
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            {pages.map((page: Record<string, string>) => (
+            {mainMenu.map((page: Record<string, string>) => (
               <Button
                 key={page.name}
                 onClick={handleCloseNavMenu}
                 sx={{ my: 2, color: 'white', display: 'block' }}
               >
-                {page.name}
+                <NavLink
+                  key={page.name}
+                  to={page.url}
+                  style={{
+                    color: 'white',
+                    display: 'block',
+                    textDecoration: 'none',
+                  }}
+                >
+                  {page.name}
+                </NavLink>
               </Button>
             ))}
           </Box>
@@ -171,7 +150,7 @@ function ResponsiveAppBar() {
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                <Avatar alt="Fox" src="/static/images/avatar/2.jpg" />
               </IconButton>
             </Tooltip>
             <Menu
@@ -190,10 +169,22 @@ function ResponsiveAppBar() {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map((setting: Record<string, string>) => (
-                <MenuItem key={setting.name} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting.name}</Typography>
-                </MenuItem>
+              {userMenu.map((setting: Record<string, string>) => (
+                <NavLink
+                  key={setting.name}
+                  to={setting.url}
+                  style={{
+                    margin: 0,
+                    fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
+                    fontWeight: 400,
+                    textDecoration: 'none',
+                    color: '#1A2027',
+                  }}
+                >
+                  <MenuItem onClick={handleCloseUserMenu}>
+                    <Typography textAlign="center">{setting.name}</Typography>
+                  </MenuItem>
+                </NavLink>
               ))}
             </Menu>
           </Box>

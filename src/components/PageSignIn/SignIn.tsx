@@ -1,75 +1,107 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
-import Link from '@mui/material/Link';
+import { NavLink } from 'react-router-dom';
 import TextField from '@mui/material/TextField';
 import { SIGNUP_URL } from '../../utils/constants';
+import useFormWithValidation from '../../utils/validator';
 
 import { IProps } from './IProps';
+import { IValid } from './IValid';
 
 function SignIn(props: IProps) {
+  const {
+    values,
+    errors,
+    isValid,
+    handleChange,
+  }: IValid = useFormWithValidation();
   const { handleSignIn } = props;
-  const [data, setData] = useState({
-    email: '',
-    password: '',
-  });
-  const handleChange = (evt: any) => {
-    const { name, value } = evt.target;
-    setData({
-      ...data,
-      [name]: value,
-    });
-  };
   const handleSubmit = (evt: any) => {
     evt.preventDefault();
-    handleSignIn(data);
+    handleSignIn(values);
   };
   return (
     <Container maxWidth="lg">
-      <form onSubmit={handleSubmit}>
-        <Box
-          gridColumn="span 1"
+      <Box
+        component="form"
+        onSubmit={handleSubmit}
+        gridColumn="span 1"
+        sx={{
+          '& .MuiTextField-root': { m: 2 },
+          display: 'flex',
+          justifyContent: 'center',
+          flexDirection: 'column',
+          textAlign: 'center',
+          alignItems: 'center',
+          minHeight: 800,
+        }}
+      >
+        <Typography variant="h5" gutterBottom component="div">
+          SignIn
+        </Typography>
+        <TextField
+          error={!!errors.email}
           sx={{
-            display: 'flex',
-            justifyContent: 'center',
-            flexDirection: 'column',
-            textAlign: 'center',
-            alignItems: 'center',
-            minHeight: 600,
+            m: 2,
+            maxWidth: '40ch',
+            width: '100%',
+          }}
+          required
+          id="outlined-required"
+          label="E-mail"
+          defaultValue=""
+          name="email"
+          onChange={handleChange}
+          helperText={errors.email}
+          type="email"
+        />
+        <TextField
+          error={!!errors.password}
+          sx={{
+            m: 2,
+            maxWidth: '40ch',
+            width: '100%',
+          }}
+          required
+          id="outlined-required"
+          label="Password"
+          defaultValue=""
+          name="password"
+          onChange={handleChange}
+          helperText={errors.password}
+          type="password"
+          autoComplete="current-password"
+          inputProps={{
+            minLength: 6,
+          }}
+        />
+        <Button
+          variant="outlined"
+          size="large"
+          sx={{
+            m: 4,
+            maxWidth: '43ch',
+            width: '100%',
+          }}
+          type="submit"
+          disabled={!isValid}
+        >
+          SignIn
+        </Button>
+        <NavLink
+          to={SIGNUP_URL}
+          style={{
+            margin: '0',
+            color: '#1976d2',
+            textDecoration: 'none',
           }}
         >
-          <Typography variant="h5" gutterBottom component="div">SignIn</Typography>
-          <TextField
-            sx={{ m: 1, width: '40ch' }}
-            required
-            id="outlined-required"
-            label="E-mail"
-            defaultValue=""
-            name="email"
-            onChange={handleChange}
-          />
-          <TextField
-            sx={{ m: 1, width: '40ch' }}
-            required
-            id="outlined-required"
-            label="Password"
-            defaultValue=""
-            name="password"
-            onChange={handleChange}
-          />
-          <Button
-            variant="outlined"
-            size="large"
-            sx={{ m: 1, width: '43ch' }}
-            type="submit"
-          >
-            SignIn
-          </Button>
-          <Link href={SIGNUP_URL} underline="none">SignUp</Link>
-        </Box>
-      </form>
+          SignUp
+        </NavLink>
+      </Box>
     </Container>
   );
 }

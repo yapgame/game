@@ -8,3 +8,4 @@ export const PLAY_URL = '/play';
 export const LEADERBOARD_URL = '/leaderboard';
 export const INTERNAL_SERVER_ERROR = '/internal-server-error';
 export const TEAM_URL = '/team';
+

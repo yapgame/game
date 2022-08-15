@@ -4,7 +4,6 @@ import CssBaseline from '@mui/material/CssBaseline';
 import {
   Route,
   Routes,
-  NavLink,
 } from 'react-router-dom';
 import Leaderboard from '../Leaderboard/Leaderboard';
 import PageStart from '../PageStart/PageStart';
@@ -17,6 +16,7 @@ import SignIn from '../PageSignIn/SignIn';
 import Profile from '../Profile/Profile';
 import Team from '../Team/Team';
 import Game from '../Game/Game';
+import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 
 import {
   BASE_URL,
@@ -31,6 +31,7 @@ import {
 
 function App() {
   const mountedRef = useRef(false);
+  const [loggedIn, setLoggedIn] = React.useState(false);
   const handleSignUp = (data: Record<string, string>) => {
     // eslint-disable-next-line no-console
     console.log(data);
@@ -49,6 +50,7 @@ function App() {
   };
   useEffect(() => {
     mountedRef.current = true;
+    setLoggedIn(false); // !!!
     return () => {
       mountedRef.current = false;
     };
@@ -57,33 +59,54 @@ function App() {
     <>
       <CssBaseline />
       <ResponsiveAppBar />
-      <NavLink to="/signup">Signup</NavLink>
-      <NavLink to="/signin">Signin</NavLink>
-      <NavLink to="/profile">Profile</NavLink>
-      <NavLink to="/leaderboard">Leaderboard</NavLink>
-      <NavLink to="/play">Play</NavLink>
-      <NavLink to="/team">Team</NavLink>
-      <NavLink to="/game">Game</NavLink>
       <Routes>
         <Route
           path={BASE_URL}
-          element={(<Game />)}
-        />
-        <Route
-          path={SIGNUP_URL}
-          element={(<SignUp handleSignUp={handleSignUp} />)}
-        />
-        <Route
-          path={SIGNIN_URL}
-          element={(<SignIn handleSignIn={handleSignIn} />)}
+          element={(
+            <ProtectedRoute
+              loggedIn={loggedIn}
+            >
+              <Game />
+            </ProtectedRoute>
+          )}
         />
         <Route
           path={PROFILE_URL}
-          element={(<Profile />)}
+          element={(
+            <ProtectedRoute
+              loggedIn={loggedIn}
+            >
+              <Profile />
+            </ProtectedRoute>
+          )}
         />
         <Route
           path={PLAY_URL}
-          element={(<PageStart handleStartGame={handleStartGame} />)}
+          element={(
+            <ProtectedRoute
+              loggedIn={loggedIn}
+            >
+              <PageStart
+                handleStartGame={handleStartGame}
+              />
+            </ProtectedRoute>
+          )}
+        />
+        <Route
+          path={SIGNUP_URL}
+          element={(
+            <SignUp
+              handleSignUp={handleSignUp}
+            />
+          )}
+        />
+        <Route
+          path={SIGNIN_URL}
+          element={(
+            <SignIn
+              handleSignIn={handleSignIn}
+            />
+          )}
         />
         <Route
           path={LEADERBOARD_URL}
