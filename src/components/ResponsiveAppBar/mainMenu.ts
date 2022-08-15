@@ -1,3 +1,4 @@
+/* eslint-disable import/prefer-default-export */
 import { LEADERBOARD_URL, PLAY_URL, TEAM_URL } from '../../utils/constants';
 
 export const mainMenu: Array<Record<string, string>> = [

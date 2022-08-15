@@ -1,3 +1,4 @@
+/* eslint-disable import/prefer-default-export */
 import {
   SIGNUP_URL,
   SIGNIN_URL,

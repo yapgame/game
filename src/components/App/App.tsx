@@ -50,7 +50,7 @@ function App() {
   };
   useEffect(() => {
     mountedRef.current = true;
-    setLoggedIn(false); // !!!
+    setLoggedIn(true); // !!!
     return () => {
       mountedRef.current = false;
     };
@@ -76,7 +76,10 @@ function App() {
             <ProtectedRoute
               loggedIn={loggedIn}
             >
-              <Profile />
+              <Profile
+                userName="Fox"
+                score={77}
+              />
             </ProtectedRoute>
           )}
         />
