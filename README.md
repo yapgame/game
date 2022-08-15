@@ -1,4 +1,5 @@
-# game
+# game Croco
+## Crocodile TS
 reactjs, canvas api
 
 Implemented features:
@@ -11,5 +12,8 @@ Implemented features:
 - `npm install` — install,
 
 ## Tech Stack
+- React
+- TS
+- MUI
 
 ## Developers
