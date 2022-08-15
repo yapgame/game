@@ -4,7 +4,10 @@ import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 
-function PageStart() {
+import { IProps } from './IProps';
+
+function PageStart(props: IProps) {
+  const { handleStartGame } = props;
   return (
     <Container maxWidth="lg">
       <Box
@@ -19,7 +22,12 @@ function PageStart() {
         }}
       >
         <Typography variant="h2" gutterBottom component="div">New Game</Typography>
-        <Button variant="outlined">Start</Button>
+        <Button
+          variant="outlined"
+          onClick={handleStartGame}
+        >
+          Start
+        </Button>
       </Box>
     </Container>
   );

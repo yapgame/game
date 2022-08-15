@@ -5,7 +5,7 @@ import Container from '@mui/material/Container';
 import Link from '@mui/material/Link';
 
 function Profile() {
-  // => Props
+  // => Props or...
   return (
     <Container maxWidth="lg">
       <Box
