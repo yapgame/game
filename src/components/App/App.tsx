@@ -27,6 +27,7 @@ import {
   LEADERBOARD_URL,
   INTERNAL_SERVER_ERROR,
   TEAM_URL,
+  GAME_URL,
 } from '../../utils/constants';
 
 function App() {
@@ -68,6 +69,16 @@ function App() {
             >
               <Game />
             </ProtectedRoute>
+          )}
+        />
+        <Route
+          path={GAME_URL}
+          element={(
+            // <ProtectedRoute
+            //   loggedIn={loggedIn}
+            // >
+              <Game />
+            // </ProtectedRoute>
           )}
         />
         <Route
