@@ -1,16 +1,16 @@
-import { LEADERBOARD_URL, PLAY_URL, TEAM_URL } from '../../utils/constants';
+import { Urls } from '../../utils/constants';
 
 export const mainMenu: Array<Record<string, string>> = [
   {
     name: 'Play',
-    url: PLAY_URL,
+    url: Urls.PLAY,
   },
   {
     name: 'Leaderboard',
-    url: LEADERBOARD_URL,
+    url: Urls.LEADERBOARD,
   },
   {
     name: 'Team',
-    url: TEAM_URL,
+    url: Urls.TEAM,
   },
 ];
