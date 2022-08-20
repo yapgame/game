@@ -20,6 +20,7 @@ import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 
 import { Urls } from '../../utils/constants';
 import { IUser } from './IUser';
+
 import image from '../../images/2.jpg';
 
 import auth from '../../utils/authApi';

@@ -29,7 +29,7 @@ function Profile(props: IProps) {
     handleChange,
   }: IValid = useFormWithValidation();
 
-  const handleSubmit = (evt: any) => {
+  const handleSubmit = (evt: React.FormEvent) => {
     evt.preventDefault();
 
     console.log(values);

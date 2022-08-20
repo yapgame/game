@@ -1,3 +1,4 @@
+/* eslint-disable class-methods-use-this */
 interface IOption {
   baseUrl: string,
   headers: Record<string, string>,
@@ -14,7 +15,6 @@ export class Auth {
     this.options = options;
   }
 
-  // eslint-disable-next-line class-methods-use-this
   checkResponse(res: Response) {
     if (res.ok) {
       return res.json();
