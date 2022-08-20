@@ -20,7 +20,7 @@ function SignUp(props: IProps) {
     handleChange,
   }: IValid = useFormWithValidation();
   const { handleSignUp } = props;
-  const handleSubmit = (evt: any) => {
+  const handleSubmit = (evt: React.FormEvent) => {
     evt.preventDefault();
     const data = {
       ...values,

@@ -12,14 +12,14 @@ import FormDialog from './FormDialog';
 import image from '../../images/2.jpg';
 import { Urls } from '../../utils/constants';
 
-// import { IProps } from './IProps';
+import { IProps } from './IProps';
 
 function Profile({
   login,
   score,
   first_name,
   second_name,
-}:any) {
+}: IProps) {
   const currentUser: Record<string, string> = { url: image, alt: 'name' };
   // const userInfo: any = { userName: 'Fox', score: 77, email: 'email@yandex.ru' };
   return (
