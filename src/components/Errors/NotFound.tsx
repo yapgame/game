@@ -1,8 +1,9 @@
 import React from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import Link from '@mui/material/Link';
+import { NavLink } from 'react-router-dom';
 import Container from '@mui/material/Container';
+import { Urls } from '../../utils/constants';
 
 function NotFound() {
   return (
@@ -20,7 +21,16 @@ function NotFound() {
       >
         <Typography variant="h2" gutterBottom component="div">404</Typography>
         <Typography variant="body1" gutterBottom>Page Not Found</Typography>
-        <Link href="/" underline="none">Back</Link>
+        <NavLink
+          to={Urls.BASE}
+          style={{
+            margin: '0',
+            color: '#1976d2',
+            textDecoration: 'none',
+          }}
+        >
+          Back
+        </NavLink>
       </Box>
     </Container>
   );

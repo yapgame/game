@@ -1,7 +1,8 @@
+import React from 'react';
+
 export interface IValid {
   values: Record<string, string>,
-  errors: any,
+  errors: Record<string, string>,
   isValid: boolean,
-  // eslint-disable-next-line no-unused-vars
-  handleChange: (data: any) => void,
+  handleChange: (data: React.FormEvent) => void,
 }

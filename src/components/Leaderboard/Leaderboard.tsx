@@ -13,7 +13,14 @@ import { rows } from './rows';
 function Leaderboard() {
   return (
     <Container maxWidth="lg">
-      <Typography sx={{ fontSize: 16 }} color="text.secondary" gutterBottom>
+      <Typography
+        sx={{
+          margin: 2,
+        }}
+        variant="h5"
+        gutterBottom
+        component="div"
+      >
         Leaderboard
       </Typography>
       <TableContainer component={Paper}>

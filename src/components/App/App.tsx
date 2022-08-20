@@ -1,4 +1,3 @@
-/* eslint-disable import/no-unresolved */
 import React, { useRef, useEffect } from 'react';
 import CssBaseline from '@mui/material/CssBaseline';
 import {
@@ -14,31 +13,54 @@ import Footer from '../Footer/Footer';
 import SignUp from '../PageSignUp/SignUp';
 import SignIn from '../PageSignIn/SignIn';
 import Profile from '../Profile/Profile';
+import ProfileEdit from '../Profile/ProfileEdit';
 import Team from '../Team/Team';
 import Game from '../Game/Game';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 
-import {
-  BASE_URL,
-  SIGNUP_URL,
-  SIGNIN_URL,
-  PROFILE_URL,
-  PLAY_URL,
-  LEADERBOARD_URL,
-  INTERNAL_SERVER_ERROR,
-  TEAM_URL,
-} from '../../utils/constants';
+import { Urls } from '../../utils/constants';
+import { IUser } from './IUser';
+
+import image from '../../images/2.jpg';
+
+import auth from '../../utils/authApi';
 
 function App() {
+  const currentUser: Record<string, string> = { url: image as string, alt: 'name' };
+  const userInfo: IUser = {
+    first_name: 'Martin',
+    second_name: 'Brest',
+    display_name: 'Rudy',
+    login: 'Fox',
+    score: '77',
+    email: 'email@yandex.ru',
+    phone: '1234567890',
+  };
   const mountedRef = useRef(false);
   const [loggedIn, setLoggedIn] = React.useState(false);
   const handleSignUp = (data: Record<string, string>) => {
     // eslint-disable-next-line no-console
     console.log(data);
+    auth
+      .signUp(data)
+      .then((res: Response) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   const handleSignIn = (data: Record<string, string>) => {
     // eslint-disable-next-line no-console
     console.log(data);
+    auth
+      .signIn(data)
+      .then((res: Response) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   // const handleSignOut = () => {
   //   // eslint-disable-next-line no-console
@@ -50,7 +72,7 @@ function App() {
   };
   useEffect(() => {
     mountedRef.current = true;
-    setLoggedIn(false); // !!!
+    setLoggedIn(true); // !!!
     return () => {
       mountedRef.current = false;
     };
@@ -58,10 +80,10 @@ function App() {
   return (
     <>
       <CssBaseline />
-      <ResponsiveAppBar />
+      <ResponsiveAppBar {...currentUser} />
       <Routes>
         <Route
-          path={BASE_URL}
+          path={Urls.BASE}
           element={(
             <ProtectedRoute
               loggedIn={loggedIn}
@@ -71,17 +93,28 @@ function App() {
           )}
         />
         <Route
-          path={PROFILE_URL}
+          path={Urls.PROFILE_EDIT}
           element={(
             <ProtectedRoute
               loggedIn={loggedIn}
             >
-              <Profile />
+              <ProfileEdit {...userInfo} />
             </ProtectedRoute>
           )}
         />
         <Route
-          path={PLAY_URL}
+          path={Urls.PROFILE}
+          element={(
+            <ProtectedRoute
+              loggedIn={loggedIn}
+            >
+              <Profile {...userInfo} />
+            </ProtectedRoute>
+          )}
+        />
+
+        <Route
+          path={Urls.PLAY}
           element={(
             <ProtectedRoute
               loggedIn={loggedIn}
@@ -93,7 +126,7 @@ function App() {
           )}
         />
         <Route
-          path={SIGNUP_URL}
+          path={Urls.SIGNUP}
           element={(
             <SignUp
               handleSignUp={handleSignUp}
@@ -101,7 +134,7 @@ function App() {
           )}
         />
         <Route
-          path={SIGNIN_URL}
+          path={Urls.SIGNIN}
           element={(
             <SignIn
               handleSignIn={handleSignIn}
@@ -109,15 +142,15 @@ function App() {
           )}
         />
         <Route
-          path={LEADERBOARD_URL}
+          path={Urls.LEADERBOARD}
           element={(<Leaderboard />)}
         />
         <Route
-          path={TEAM_URL}
+          path={Urls.TEAM}
           element={(<Team />)}
         />
         <Route
-          path={INTERNAL_SERVER_ERROR}
+          path={Urls.INTERNAL_SERVER_ERROR}
           element={(<InternalServerError />)}
         />
         <Route

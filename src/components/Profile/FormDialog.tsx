@@ -23,7 +23,7 @@ export default function FormDialog({ alt, src }: Record<string, string>) {
     setOpen(true);
   };
 
-  const handleSubmit = (evt: any) => {
+  const handleSubmit = (evt: React.FormEvent) => {
     evt.preventDefault();
     console.log(values);
     // eslint-disable-next-line no-use-before-define

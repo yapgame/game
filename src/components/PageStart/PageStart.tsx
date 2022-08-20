@@ -21,7 +21,9 @@ function PageStart(props: IProps) {
           minHeight: 600,
         }}
       >
-        <Typography variant="h2" gutterBottom component="div">New Game</Typography>
+        <Typography variant="h2" gutterBottom component="div">
+          New Game
+        </Typography>
         <Button
           variant="outlined"
           onClick={handleStartGame}
