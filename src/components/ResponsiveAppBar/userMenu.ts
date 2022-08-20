@@ -1,26 +1,24 @@
-/* eslint-disable import/prefer-default-export */
-import {
-  SIGNUP_URL,
-  SIGNIN_URL,
-  PROFILE_URL,
-  LOGOUT_URL,
-} from '../../utils/constants';
+import { Urls } from '../../utils/constants';
 
 export const userMenu: Array<Record<string, string>> = [
   {
     name: 'Profile',
-    url: PROFILE_URL,
+    url: Urls.PROFILE,
+  },
+  {
+    name: 'Edit',
+    url: Urls.PROFILE_EDIT,
   },
   {
     name: 'Logout',
-    url: LOGOUT_URL,
+    url: Urls.LOGOUT,
   },
   {
     name: 'SignUp',
-    url: SIGNUP_URL,
+    url: Urls.SIGNUP,
   },
   {
     name: 'SignIn',
-    url: SIGNIN_URL,
+    url: Urls.SIGNIN,
   },
 ];

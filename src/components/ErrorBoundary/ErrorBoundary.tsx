@@ -1,3 +1,4 @@
+/* eslint-disable react/destructuring-assignment */
 import React, { Component, ErrorInfo, ReactNode } from 'react';
 import Alert from '@mui/material/Alert';
 
@@ -22,16 +23,13 @@ class ErrorBoundary extends Component<Props, State> {
   }
 
   public componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-    // eslint-disable-next-line no-console
     console.error('Uncaught error:', error, errorInfo);
   }
 
   public render() {
-    // eslint-disable-next-line react/destructuring-assignment
     if (this.state.hasError) {
       return <Alert severity="error">Sorry.. there was an error</Alert>;
     }
-    // eslint-disable-next-line react/destructuring-assignment
     return this.props.children;
   }
 }

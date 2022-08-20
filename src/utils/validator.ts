@@ -5,10 +5,9 @@ function useFormWithValidation() {
   const [errors, setErrors] = React.useState({});
   const [isValid, setIsValid] = React.useState(false);
 
-  const handleChange = (event: { target: any; }) => {
+  const handleChange = (event: { target: Record<string, any> }) => {
     const { target } = event;
-    const { name } = target;
-    const { value } = target;
+    const { name, value } = target;
 
     setValues({ ...values, [name]: value });
     setErrors({ ...errors, [name]: target.validationMessage });

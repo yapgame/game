@@ -1,4 +1,4 @@
-export interface IProps {
+export interface IUser {
   login: string,
   score: string,
   email: string,

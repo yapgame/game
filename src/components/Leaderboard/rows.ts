@@ -10,7 +10,6 @@ function createData(
   };
 }
 
-// eslint-disable-next-line import/prefer-default-export
 export const rows = [
   createData(1, 'Cat', 40),
   createData(2, 'Dog', 37),

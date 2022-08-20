@@ -3,7 +3,7 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { NavLink } from 'react-router-dom';
 import Container from '@mui/material/Container';
-import { BASE_URL } from '../../utils/constants';
+import { Urls } from '../../utils/constants';
 
 function InternalServerError() {
   return (
@@ -22,7 +22,7 @@ function InternalServerError() {
         <Typography variant="h2" gutterBottom component="div">500</Typography>
         <Typography variant="body1" gutterBottom>Internal Server Error</Typography>
         <NavLink
-          to={BASE_URL}
+          to={Urls.BASE}
           style={{
             margin: '0',
             color: '#1976d2',
