@@ -1,12 +1,6 @@
 /* eslint-disable class-methods-use-this */
-interface IOption {
-  baseUrl: string,
-  headers: Record<string, string>,
-}
-
-const Methods = {
-  POST: 'POST',
-};
+import { Methods } from './Methods';
+import { IOption } from './IOption';
 
 export class Auth {
   private options: IOption;
@@ -36,9 +30,57 @@ export class Auth {
     const res = await fetch(`${this.options.baseUrl}/auth/signin`, {
       method: Methods.POST,
       headers: this.options.headers,
+      credentials: 'include',
       body: JSON.stringify(data),
     });
     return this.checkResponse(res);
+  }
+
+  async changeUserInfo(data: Record<string, string>) {
+    const res = await fetch(`${this.options.baseUrl}/user/profile`, {
+      method: Methods.PUT,
+      headers: this.options.headers,
+      credentials: 'include',
+      body: JSON.stringify(data),
+    });
+    return this.checkResponse(res);
+  }
+
+  async changeUserAvatar(data: Record<string, string>) {
+    const res = await fetch(`${this.options.baseUrl}/user/profile/avatar`, {
+      method: Methods.POST,
+      headers: this.options.headers,
+      credentials: 'include',
+      body: JSON.stringify(data),
+    });
+    return this.checkResponse(res);
+  }
+
+  async changeUserPassword(data: Record<string, string>) {
+    const res = await fetch(`${this.options.baseUrl}/user/password`, {
+      method: Methods.POST,
+      headers: this.options.headers,
+      credentials: 'include',
+      body: JSON.stringify(data),
+    });
+    return this.checkResponse(res);
+  }
+
+  async getUser() {
+    const res = await fetch(`${this.options.baseUrl}/auth/user`, {
+      method: 'GET',
+      headers: this.options.headers,
+      credentials: 'include',
+    });
+    console.log(res);
+    return this.checkResponse(res);
+
+    // const res = await fetch(`${this.options.baseUrl}/user/${id}`, {
+    //   method: Methods.GET,
+    //   // headers: this.options.headers,
+    //   // body: JSON.stringify(data),
+    // });
+    // return this.checkResponse(res);
   }
 }
 

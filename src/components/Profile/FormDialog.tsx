@@ -10,7 +10,14 @@ import Avatar from '@mui/material/Avatar';
 import { IValid } from './IValid';
 import useFormWithValidation from '../../utils/validator';
 
-export default function FormDialog({ alt, src }: Record<string, string>) {
+interface IProps {
+  alt: string,
+  src: string,
+  onHandleSubmit: (data: Record<string, string>) => void,
+};
+
+export default function FormDialog(props: IProps) {
+  const { alt, src, onHandleSubmit } = props;
   const {
     values,
     errors,
@@ -25,10 +32,10 @@ export default function FormDialog({ alt, src }: Record<string, string>) {
 
   const handleSubmit = (evt: React.FormEvent) => {
     evt.preventDefault();
-    console.log(values);
     // eslint-disable-next-line no-use-before-define
     handleClose();
-    // handleSignIn(values);
+    // @ts-ignore
+    onHandleSubmit(values);
   };
   const handleClose = () => {
     setOpen(false);

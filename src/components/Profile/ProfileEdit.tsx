@@ -1,25 +1,50 @@
 /* eslint-disable camelcase */
 import React from 'react';
+import { useSelector } from 'react-redux';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import { NavLink } from 'react-router-dom';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
+import { selectData } from '../../user/userSlice';
 import { IValid } from './IValid';
 import useFormWithValidation from '../../utils/validator';
 import { IProps } from './IProps';
 import { Urls } from '../../utils/constants';
 
-function Profile(props: IProps) {
+function ProfileEdit(props: IProps) {
+  // interface IUser {
+  //   id: number,
+  //   first_name: string,
+  //   second_name: string,
+  //   display_name: string,
+  //   login: string,
+  //   email: string,
+  //   phone: string,
+  //   avatar: string
+  // }
+  const { user }: any = useSelector(selectData);
+
   const {
-    login = '1',
-    score = '2',
-    email = '3',
+    // id,
     first_name,
     second_name,
     display_name,
+    login,
+    email,
     phone,
+    // avatar,
+  } = user;
+  const {
+    // login = '1',
+    score = '2',
+    // email = '3',
+    // first_name,
+    // second_name,
+    // display_name,
+    // phone,
+    onHandleSubmit,
   } = props;
 
   const {
@@ -31,9 +56,8 @@ function Profile(props: IProps) {
 
   const handleSubmit = (evt: React.FormEvent) => {
     evt.preventDefault();
-
-    console.log(values);
-    // handleSignIn(values);
+    // eslint-disable-next-line no-undef
+    onHandleSubmit(values);
   };
 
   React.useEffect(() => {
@@ -186,4 +210,4 @@ function Profile(props: IProps) {
   );
 }
 
-export default Profile;
+export default ProfileEdit;

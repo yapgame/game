@@ -3,7 +3,13 @@ import CssBaseline from '@mui/material/CssBaseline';
 import {
   Route,
   Routes,
+  useNavigate,
 } from 'react-router-dom';
+
+import { useDispatch } from 'react-redux';
+// import { useSelector } from 'react-redux';
+import { setUserData } from '../../user/userSlice';
+
 import Leaderboard from '../Leaderboard/Leaderboard';
 import PageStart from '../PageStart/PageStart';
 import NotFound from '../Errors/NotFound';
@@ -21,12 +27,16 @@ import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 import { Urls } from '../../utils/constants';
 import { IUser } from './IUser';
 
-import image from '../../images/2.jpg';
+// import image from '../../images/2.jpg';
 
 import auth from '../../utils/authApi';
 
 function App() {
-  const currentUser: Record<string, string> = { url: image as string, alt: 'name' };
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  // const currentUser = useSelector(selectData);
+  // const [currentUser, setCurrentUser] = React.useState({
+  //  url: image as string, alt: 'name' }); // !!! => redux
   const userInfo: IUser = {
     first_name: 'Martin',
     second_name: 'Brest',
@@ -38,9 +48,8 @@ function App() {
   };
   const mountedRef = useRef(false);
   const [loggedIn, setLoggedIn] = React.useState(false);
+
   const handleSignUp = (data: Record<string, string>) => {
-    // eslint-disable-next-line no-console
-    console.log(data);
     auth
       .signUp(data)
       .then((res: Response) => {
@@ -51,8 +60,6 @@ function App() {
       });
   };
   const handleSignIn = (data: Record<string, string>) => {
-    // eslint-disable-next-line no-console
-    console.log(data);
     auth
       .signIn(data)
       .then((res: Response) => {
@@ -61,6 +68,12 @@ function App() {
       .catch((err) => {
         console.log(err);
       });
+  };
+  const handleEditProfile = (data: Record<string, string>) => {
+    console.log(data);
+  };
+  const handleEditAvatar = (data: Record<string, string>) => {
+    console.log(data);
   };
   // const handleSignOut = () => {
   //   // eslint-disable-next-line no-console
@@ -72,7 +85,15 @@ function App() {
   };
   useEffect(() => {
     mountedRef.current = true;
-    setLoggedIn(true); // !!!
+    auth
+      .getUser()
+      .then((user) => {
+        // setCurrentUser(userInfo);
+        console.log(user);
+        dispatch(setUserData(user));
+        setLoggedIn(true); // !!!
+        navigate(Urls.PROFILE);
+      });
     return () => {
       mountedRef.current = false;
     };
@@ -80,7 +101,7 @@ function App() {
   return (
     <>
       <CssBaseline />
-      <ResponsiveAppBar {...currentUser} />
+      <ResponsiveAppBar />
       <Routes>
         <Route
           path={Urls.BASE}
@@ -98,7 +119,10 @@ function App() {
             <ProtectedRoute
               loggedIn={loggedIn}
             >
-              <ProfileEdit {...userInfo} />
+              <ProfileEdit
+                onHandleSubmit={handleEditProfile}
+                {...userInfo}
+              />
             </ProtectedRoute>
           )}
         />
@@ -108,7 +132,10 @@ function App() {
             <ProtectedRoute
               loggedIn={loggedIn}
             >
-              <Profile {...userInfo} />
+              <Profile
+                onHandleSubmit={handleEditAvatar}
+                {...userInfo}
+              />
             </ProtectedRoute>
           )}
         />

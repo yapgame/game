@@ -1,5 +1,6 @@
 /* eslint-disable camelcase */
 import React from 'react';
+import { useSelector } from 'react-redux';
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
@@ -8,20 +9,37 @@ import Card from '@mui/material/Card';
 import Container from '@mui/material/Container';
 import Tooltip from '@mui/material/Tooltip';
 import { NavLink } from 'react-router-dom';
+import { selectData } from '../../user/userSlice';
 import FormDialog from './FormDialog';
 import image from '../../images/2.jpg';
 import { Urls } from '../../utils/constants';
 
 import { IProps } from './IProps';
 
+// interface IUser {
+//   id: number,
+//   first_name: string,
+//   second_name: string,
+//   display_name: string,
+//   login: string,
+//   email: string,
+//   phone: string,
+//   avatar: string
+// }
+
 function Profile({
-  login,
   score,
-  first_name,
-  second_name,
+  onHandleSubmit,
 }: IProps) {
+  const { user }: any = useSelector(selectData);
+
+  const {
+    first_name,
+    second_name,
+    login,
+  } = user;
+
   const currentUser: Record<string, string> = { url: image, alt: 'name' };
-  // const userInfo: any = { userName: 'Fox', score: 77, email: 'email@yandex.ru' };
   return (
     <Container maxWidth="lg">
       <Box
@@ -51,7 +69,8 @@ function Profile({
             <Badge badgeContent={`${score}`} color="primary">
               <IconButton>
                 <FormDialog
-                  alt={currentUser.name}
+                  onHandleSubmit={onHandleSubmit}
+                  alt={currentUser.alt}
                   src={currentUser.url}
                 />
               </IconButton>
