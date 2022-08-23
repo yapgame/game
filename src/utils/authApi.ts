@@ -1,6 +1,6 @@
 /* eslint-disable class-methods-use-this */
 import { Methods } from './Methods';
-import { IOption } from './IOption';
+import { IOption } from '../interfaces/IOption';
 
 export class Auth {
   private options: IOption;
@@ -23,7 +23,7 @@ export class Auth {
       headers: this.options.headers,
       body: JSON.stringify(data),
     });
-    return this.checkResponse(res);
+    return res;
   }
 
   async signIn(data: Record<string, string>) {
@@ -33,7 +33,17 @@ export class Auth {
       credentials: 'include',
       body: JSON.stringify(data),
     });
-    return this.checkResponse(res);
+    return res;
+  }
+
+  async signOut() {
+    const res = await fetch(`${this.options.baseUrl}/auth/logout`, {
+      method: Methods.POST,
+      headers: this.options.headers,
+      credentials: 'include',
+      // body: JSON.stringify(data),
+    });
+    return res;
   }
 
   async changeUserInfo(data: Record<string, string>) {
@@ -46,12 +56,17 @@ export class Auth {
     return this.checkResponse(res);
   }
 
-  async changeUserAvatar(data: Record<string, string>) {
+  async changeUserAvatar(file: any) {
+    const data = new FormData();
+    data.append('avatar', file, '2.jpg');
     const res = await fetch(`${this.options.baseUrl}/user/profile/avatar`, {
-      method: Methods.POST,
-      headers: this.options.headers,
+      method: Methods.PUT,
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'multipart/form-data',
+      },
       credentials: 'include',
-      body: JSON.stringify(data),
+      body: data,
     });
     return this.checkResponse(res);
   }
@@ -68,19 +83,11 @@ export class Auth {
 
   async getUser() {
     const res = await fetch(`${this.options.baseUrl}/auth/user`, {
-      method: 'GET',
+      method: Methods.GET,
       headers: this.options.headers,
       credentials: 'include',
     });
-    console.log(res);
     return this.checkResponse(res);
-
-    // const res = await fetch(`${this.options.baseUrl}/user/${id}`, {
-    //   method: Methods.GET,
-    //   // headers: this.options.headers,
-    //   // body: JSON.stringify(data),
-    // });
-    // return this.checkResponse(res);
   }
 }
 

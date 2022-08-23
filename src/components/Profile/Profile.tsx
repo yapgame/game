@@ -11,35 +11,19 @@ import Tooltip from '@mui/material/Tooltip';
 import { NavLink } from 'react-router-dom';
 import { selectData } from '../../user/userSlice';
 import FormDialog from './FormDialog';
-import image from '../../images/2.jpg';
 import { Urls } from '../../utils/constants';
 
-import { IProps } from './IProps';
+import { IProfileProps, IUser } from '../../interfaces/interfaces';
 
-// interface IUser {
-//   id: number,
-//   first_name: string,
-//   second_name: string,
-//   display_name: string,
-//   login: string,
-//   email: string,
-//   phone: string,
-//   avatar: string
-// }
-
-function Profile({
-  score,
-  onHandleSubmit,
-}: IProps) {
-  const { user }: any = useSelector(selectData);
-
+function Profile({ score, onHandleSubmit }: IProfileProps) {
+  // @ts-ignore
+  const { user }: { user: IUser } = useSelector(selectData);
   const {
     first_name,
     second_name,
     login,
+    avatar,
   } = user;
-
-  const currentUser: Record<string, string> = { url: image, alt: 'name' };
   return (
     <Container maxWidth="lg">
       <Box
@@ -65,13 +49,13 @@ function Profile({
             alignItems: 'center',
           }}
         >
-          <Tooltip title="Change avatar">
+          <Tooltip title="Change avatar" placement="top">
             <Badge badgeContent={`${score}`} color="primary">
               <IconButton>
                 <FormDialog
                   onHandleSubmit={onHandleSubmit}
-                  alt={currentUser.alt}
-                  src={currentUser.url}
+                  alt={login}
+                  src={`https://ya-praktikum.tech/api/v2/resources/${avatar}`}
                 />
               </IconButton>
             </Badge>

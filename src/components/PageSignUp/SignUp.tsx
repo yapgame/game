@@ -9,10 +9,9 @@ import { NavLink } from 'react-router-dom';
 import { Urls } from '../../utils/constants';
 import useFormWithValidation from '../../utils/validator';
 
-import { IProps } from './IProps';
-import { IValid } from './IValid';
+import { IValid, ISignUpProps } from '../../interfaces/interfaces';
 
-function SignUp(props: IProps) {
+function SignUp(props: ISignUpProps) {
   const {
     values,
     errors,
@@ -22,16 +21,7 @@ function SignUp(props: IProps) {
   const { handleSignUp } = props;
   const handleSubmit = (evt: React.FormEvent) => {
     evt.preventDefault();
-    const data = {
-      ...values,
-      login: 'fgh',
-      score: '88',
-      first_name: 'qaz',
-      second_name: 'wsx',
-      display_name: 'sdf',
-      phone: '0123456789',
-    };
-    handleSignUp(data);
+    handleSignUp(values);
   };
   return (
     <Container maxWidth="lg">
@@ -46,14 +36,14 @@ function SignUp(props: IProps) {
           flexDirection: 'column',
           textAlign: 'center',
           alignItems: 'center',
-          minHeight: 800,
+          minHeight: 1000,
         }}
       >
         <Card
           sx={{
             width: '100%',
             maxWidth: 400,
-            minHeight: 600,
+            minHeight: 900,
             display: 'flex',
             justifyContent: 'center',
             flexDirection: 'column',
@@ -64,6 +54,86 @@ function SignUp(props: IProps) {
           <Typography variant="h5" gutterBottom component="div">
             SignUp
           </Typography>
+          <TextField
+            error={!!errors.login}
+            sx={{
+              m: 2,
+              maxWidth: '40ch',
+              width: '100%',
+            }}
+            required
+            id="outlined-required"
+            label="Login"
+            defaultValue=""
+            name="login"
+            onChange={handleChange}
+            helperText={errors.login}
+            type="login"
+          />
+          <TextField
+            error={!!errors.display_name}
+            sx={{
+              m: 2,
+              maxWidth: '40ch',
+              width: '100%',
+            }}
+            required
+            id="outlined-required"
+            label="Display name"
+            defaultValue=""
+            name="display_name"
+            onChange={handleChange}
+            helperText={errors.display_name}
+            type="display_name"
+          />
+          <TextField
+            error={!!errors.first_name}
+            sx={{
+              m: 2,
+              maxWidth: '40ch',
+              width: '100%',
+            }}
+            required
+            id="outlined-required"
+            label="First name"
+            defaultValue=""
+            name="first_name"
+            onChange={handleChange}
+            helperText={errors.first_name}
+            type="first_name"
+          />
+          <TextField
+            error={!!errors.second_name}
+            sx={{
+              m: 2,
+              maxWidth: '40ch',
+              width: '100%',
+            }}
+            required
+            id="outlined-required"
+            label="Second name"
+            defaultValue=""
+            name="second_name"
+            onChange={handleChange}
+            helperText={errors.second_name}
+            type="second_name"
+          />
+          <TextField
+            error={!!errors.phone}
+            sx={{
+              m: 2,
+              maxWidth: '40ch',
+              width: '100%',
+            }}
+            required
+            id="outlined-required"
+            label="Phone"
+            defaultValue=""
+            name="phone"
+            onChange={handleChange}
+            helperText={errors.phone}
+            type="phone"
+          />
           <TextField
             error={!!errors.email}
             sx={{

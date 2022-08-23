@@ -1,30 +1,29 @@
-import * as React from 'react';
+/* eslint-disable no-use-before-define */
+import React, { useState } from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import Avatar from '@mui/material/Avatar';
-import { IValid } from './IValid';
-import useFormWithValidation from '../../utils/validator';
 
 interface IProps {
   alt: string,
   src: string,
-  onHandleSubmit: (data: Record<string, string>) => void,
-};
+  onHandleSubmit: (data: any) => void,
+}
 
 export default function FormDialog(props: IProps) {
   const { alt, src, onHandleSubmit } = props;
-  const {
-    values,
-    errors,
-    isValid,
-    handleChange,
-  }: IValid = useFormWithValidation();
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
+  const [file, setFile] = useState([]);
+  const [isValid, setIsValid] = useState(false);
+
+  React.useEffect(() => {
+    if (file) {
+      setIsValid(true);
+    }
+  }, [file]);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -32,13 +31,15 @@ export default function FormDialog(props: IProps) {
 
   const handleSubmit = (evt: React.FormEvent) => {
     evt.preventDefault();
-    // eslint-disable-next-line no-use-before-define
     handleClose();
-    // @ts-ignore
-    onHandleSubmit(values);
+    onHandleSubmit(file);
   };
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const uploadFile = (evt: any) => {
+    setFile(evt.target.files[0]);
   };
 
   return (
@@ -62,27 +63,10 @@ export default function FormDialog(props: IProps) {
             width: '60ch',
           }}
           component="form"
+          onSubmit={handleSubmit}
         >
           <DialogTitle>Avatar</DialogTitle>
-          <DialogContent>
-            <TextField
-              onChange={handleChange}
-              error={!!errors.avatar}
-              helperText={errors.avatar}
-              sx={{
-                width: '100%',
-              }}
-              autoComplete="off"
-              autoFocus
-              margin="dense"
-              name="avatar"
-              id="outlined-required"
-              defaultValue=""
-              label="Url link"
-              type="url"
-              fullWidth
-            />
-          </DialogContent>
+
           <DialogActions>
             <Button
               sx={{
@@ -91,7 +75,25 @@ export default function FormDialog(props: IProps) {
               }}
               variant="outlined"
               size="large"
+              component="label"
+            >
+              Сhoose
+              <input
+                type="file"
+                hidden
+                onChange={uploadFile}
+              />
+            </Button>
+
+            <Button
+              sx={{
+                m: 2,
+                width: '100%',
+              }}
+              variant="outlined"
+              size="large"
               onClick={handleSubmit}
+              type="submit"
               disabled={!isValid}
             >
               Update

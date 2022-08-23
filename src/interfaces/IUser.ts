@@ -6,5 +6,5 @@ export interface IUser {
   login: string,
   email: string,
   phone: string,
-  avatar: string
+  avatar: string|null,
 }

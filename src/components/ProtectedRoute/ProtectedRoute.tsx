@@ -2,9 +2,9 @@ import React from 'react';
 import { Navigate } from 'react-router-dom';
 import { Urls } from '../../utils/constants';
 
-import { IProps } from './IProps';
+import { IProtectedRouteProps } from '../../interfaces/IProtectedRouteProps';
 
-function ProtectedRoute({ loggedIn, children }: IProps) {
+function ProtectedRoute({ loggedIn, children }: IProtectedRouteProps) {
   if (!loggedIn) {
     return (
       <Navigate

@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import { IUser } from './IUser';
+import { IUser } from '../interfaces/IUser';
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 const initialState: { user: IUser } = {
@@ -12,7 +12,7 @@ const initialState: { user: IUser } = {
     login: 'string',
     email: 'email@yandex.ru',
     phone: '0',
-    avatar: '1',
+    avatar: null,
   },
 };
 

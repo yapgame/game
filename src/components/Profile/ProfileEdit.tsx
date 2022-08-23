@@ -8,42 +8,23 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { selectData } from '../../user/userSlice';
-import { IValid } from './IValid';
 import useFormWithValidation from '../../utils/validator';
-import { IProps } from './IProps';
 import { Urls } from '../../utils/constants';
 
-function ProfileEdit(props: IProps) {
-  // interface IUser {
-  //   id: number,
-  //   first_name: string,
-  //   second_name: string,
-  //   display_name: string,
-  //   login: string,
-  //   email: string,
-  //   phone: string,
-  //   avatar: string
-  // }
-  const { user }: any = useSelector(selectData);
+import { IProfileProps, IUser, IValid } from '../../interfaces/interfaces';
 
+function ProfileEdit(props: IProfileProps) {
+  // @ts-ignore
+  const { user }: { user: IUser } = useSelector(selectData);
   const {
-    // id,
     first_name,
     second_name,
     display_name,
     login,
     email,
     phone,
-    // avatar,
   } = user;
   const {
-    // login = '1',
-    score = '2',
-    // email = '3',
-    // first_name,
-    // second_name,
-    // display_name,
-    // phone,
     onHandleSubmit,
   } = props;
 
@@ -61,7 +42,7 @@ function ProfileEdit(props: IProps) {
   };
 
   React.useEffect(() => {
-    values.score = score;
+    values.login = login;
     values.email = email;
     values.first_name = first_name;
     values.second_name = second_name;

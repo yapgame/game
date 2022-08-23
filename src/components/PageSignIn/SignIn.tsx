@@ -4,15 +4,14 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
-import { NavLink } from 'react-router-dom';
 import TextField from '@mui/material/TextField';
+import { NavLink } from 'react-router-dom';
 import { Urls } from '../../utils/constants';
 import useFormWithValidation from '../../utils/validator';
 
-import { IProps } from './IProps';
-import { IValid } from './IValid';
+import { IValid, ISignInProps } from '../../interfaces/interfaces';
 
-function SignIn(props: IProps) {
+function SignIn(props: ISignInProps) {
   const {
     values,
     errors,
@@ -22,11 +21,7 @@ function SignIn(props: IProps) {
   const { handleSignIn } = props;
   const handleSubmit = (evt: React.FormEvent) => {
     evt.preventDefault();
-    const data = {
-      ...values,
-      login: 'fgh',
-    };
-    handleSignIn(data);
+    handleSignIn(values);
   };
   return (
     <Container maxWidth="lg">
@@ -68,12 +63,12 @@ function SignIn(props: IProps) {
             }}
             required
             id="outlined-required"
-            label="E-mail"
+            label="Login"
             defaultValue=""
-            name="email"
+            name="login"
             onChange={handleChange}
-            helperText={errors.email}
-            type="email"
+            helperText={errors.login}
+            type="login"
           />
           <TextField
             error={!!errors.password}
