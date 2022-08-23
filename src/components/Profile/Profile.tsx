@@ -1,5 +1,6 @@
 /* eslint-disable camelcase */
 import React from 'react';
+import { useSelector } from 'react-redux';
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
@@ -8,20 +9,21 @@ import Card from '@mui/material/Card';
 import Container from '@mui/material/Container';
 import Tooltip from '@mui/material/Tooltip';
 import { NavLink } from 'react-router-dom';
+import { selectData } from '../../user/userSlice';
 import FormDialog from './FormDialog';
-import image from '../../images/2.jpg';
 import { Urls } from '../../utils/constants';
 
-import { IProps } from './IProps';
+import { IProfileProps, IUser } from '../../interfaces/interfaces';
 
-function Profile({
-  login,
-  score,
-  first_name,
-  second_name,
-}: IProps) {
-  const currentUser: Record<string, string> = { url: image, alt: 'name' };
-  // const userInfo: any = { userName: 'Fox', score: 77, email: 'email@yandex.ru' };
+function Profile({ score, onHandleSubmit }: IProfileProps) {
+  // @ts-ignore
+  const { user }: { user: IUser } = useSelector(selectData);
+  const {
+    first_name,
+    second_name,
+    login,
+    avatar,
+  } = user;
   return (
     <Container maxWidth="lg">
       <Box
@@ -47,12 +49,13 @@ function Profile({
             alignItems: 'center',
           }}
         >
-          <Tooltip title="Change avatar">
+          <Tooltip title="Change avatar" placement="top">
             <Badge badgeContent={`${score}`} color="primary">
               <IconButton>
                 <FormDialog
-                  alt={currentUser.name}
-                  src={currentUser.url}
+                  onHandleSubmit={onHandleSubmit}
+                  alt={login}
+                  src={`https://ya-praktikum.tech/api/v2/resources/${avatar}`}
                 />
               </IconButton>
             </Badge>

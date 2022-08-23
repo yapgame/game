@@ -3,11 +3,15 @@ import CssBaseline from '@mui/material/CssBaseline';
 import {
   Route,
   Routes,
+  useNavigate,
+  useLocation,
 } from 'react-router-dom';
+
+import { useDispatch } from 'react-redux';
+import { setUserData } from '../../user/userSlice';
+
 import Leaderboard from '../Leaderboard/Leaderboard';
 import PageStart from '../PageStart/PageStart';
-import NotFound from '../Errors/NotFound';
-import InternalServerError from '../Errors/InternalServerError';
 import ResponsiveAppBar from '../ResponsiveAppBar/ResponsiveAppBar';
 import Footer from '../Footer/Footer';
 import SignUp from '../PageSignUp/SignUp';
@@ -16,45 +20,48 @@ import Profile from '../Profile/Profile';
 import ProfileEdit from '../Profile/ProfileEdit';
 import Team from '../Team/Team';
 import Game from '../Game/Game';
+import NotFound from '../Errors/NotFound';
+import InternalServerError from '../Errors/InternalServerError';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 
 import { Urls } from '../../utils/constants';
-import { IUser } from './IUser';
-
-import image from '../../images/2.jpg';
-
 import auth from '../../utils/authApi';
 
 function App() {
-  const currentUser: Record<string, string> = { url: image as string, alt: 'name' };
-  const userInfo: IUser = {
-    first_name: 'Martin',
-    second_name: 'Brest',
-    display_name: 'Rudy',
-    login: 'Fox',
-    score: '77',
-    email: 'email@yandex.ru',
-    phone: '1234567890',
-  };
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const location = useLocation();
+  const score = '77';
   const mountedRef = useRef(false);
   const [loggedIn, setLoggedIn] = React.useState(false);
+
   const handleSignUp = (data: Record<string, string>) => {
-    // eslint-disable-next-line no-console
-    console.log(data);
     auth
       .signUp(data)
       .then((res: Response) => {
+        navigate(Urls.SIGNIN);
         console.log(res);
       })
       .catch((err) => {
         console.log(err);
       });
   };
+
   const handleSignIn = (data: Record<string, string>) => {
-    // eslint-disable-next-line no-console
-    console.log(data);
     auth
       .signIn(data)
+      .then(() => {
+        setLoggedIn(true);
+        navigate(Urls.PROFILE);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const handleEditProfile = (data: Record<string, string>) => {
+    auth
+      .changeUserInfo(data)
       .then((res: Response) => {
         console.log(res);
       })
@@ -62,26 +69,78 @@ function App() {
         console.log(err);
       });
   };
-  // const handleSignOut = () => {
-  //   // eslint-disable-next-line no-console
-  //   console.log('handleSignOut');
-  // };
+
+  const handleEditAvatar = (data: File) => {
+    auth
+      .changeUserAvatar(data)
+      .then((res: Response) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const handleSignOut = () => {
+    auth
+      .signOut()
+      .then(() => {
+        setLoggedIn(false);
+        navigate(Urls.SIGNIN);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    // eslint-disable-next-line no-console
+    console.log('handleSignOut');
+  };
+
   const handleStartGame = () => {
     // eslint-disable-next-line no-console
     console.log('start');
   };
+
   useEffect(() => {
     mountedRef.current = true;
-    setLoggedIn(true); // !!!
+    if (location.pathname === Urls.PROFILE
+      || location.pathname === Urls.PROFILE_EDIT
+      || location.pathname === Urls.PLAY) {
+      auth
+        .getUser()
+        .then((user) => {
+          dispatch(setUserData(user));
+          setLoggedIn(true);
+          // navigate(Urls.PROFILE);
+        });
+    }
     return () => {
       mountedRef.current = false;
     };
-  }, []);
+  }, [loggedIn]);
   return (
     <>
       <CssBaseline />
-      <ResponsiveAppBar {...currentUser} />
+      <ResponsiveAppBar
+        handleSignOut={handleSignOut}
+        loggedIn={loggedIn}
+      />
       <Routes>
+        <Route
+          path={Urls.SIGNUP}
+          element={(
+            <SignUp
+              handleSignUp={handleSignUp}
+            />
+          )}
+        />
+        <Route
+          path={Urls.SIGNIN}
+          element={(
+            <SignIn
+              handleSignIn={handleSignIn}
+            />
+          )}
+        />
         <Route
           path={Urls.BASE}
           element={(
@@ -98,7 +157,10 @@ function App() {
             <ProtectedRoute
               loggedIn={loggedIn}
             >
-              <ProfileEdit {...userInfo} />
+              <ProfileEdit
+                onHandleSubmit={handleEditProfile}
+                score={score}
+              />
             </ProtectedRoute>
           )}
         />
@@ -108,11 +170,13 @@ function App() {
             <ProtectedRoute
               loggedIn={loggedIn}
             >
-              <Profile {...userInfo} />
+              <Profile
+                onHandleSubmit={handleEditAvatar}
+                score={score}
+              />
             </ProtectedRoute>
           )}
         />
-
         <Route
           path={Urls.PLAY}
           element={(
@@ -123,22 +187,6 @@ function App() {
                 handleStartGame={handleStartGame}
               />
             </ProtectedRoute>
-          )}
-        />
-        <Route
-          path={Urls.SIGNUP}
-          element={(
-            <SignUp
-              handleSignUp={handleSignUp}
-            />
-          )}
-        />
-        <Route
-          path={Urls.SIGNIN}
-          element={(
-            <SignIn
-              handleSignIn={handleSignIn}
-            />
           )}
         />
         <Route
