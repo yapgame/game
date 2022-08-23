@@ -6,20 +6,38 @@ import { NavLink } from 'react-router-dom';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
+<<<<<<< Updated upstream
 import { IValid } from './IValid';
+=======
+import { selectData } from '../../user/userSlice';
+>>>>>>> Stashed changes
 import useFormWithValidation from '../../utils/validator';
-import { IProps } from './IProps';
 import { Urls } from '../../utils/constants';
 
+<<<<<<< Updated upstream
 function Profile(props: IProps) {
   const {
     login = '1',
     score = '2',
     email = '3',
+=======
+import { IProfileProps, IUser, IValid } from '../../interfaces/interfaces';
+
+function ProfileEdit(props: IProfileProps) {
+  // @ts-ignore
+  const { user }: { user: IUser } = useSelector(selectData);
+  const {
+>>>>>>> Stashed changes
     first_name,
     second_name,
     display_name,
     phone,
+<<<<<<< Updated upstream
+=======
+  } = user;
+  const {
+    onHandleSubmit,
+>>>>>>> Stashed changes
   } = props;
 
   const {
@@ -37,7 +55,7 @@ function Profile(props: IProps) {
   };
 
   React.useEffect(() => {
-    values.score = score;
+    values.login = login;
     values.email = email;
     values.first_name = first_name;
     values.second_name = second_name;

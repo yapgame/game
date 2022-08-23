@@ -9,9 +9,9 @@ import Container from '@mui/material/Container';
 import Tooltip from '@mui/material/Tooltip';
 import { NavLink } from 'react-router-dom';
 import FormDialog from './FormDialog';
-import image from '../../images/2.jpg';
 import { Urls } from '../../utils/constants';
 
+<<<<<<< Updated upstream
 import { IProps } from './IProps';
 
 function Profile({
@@ -22,6 +22,19 @@ function Profile({
 }: IProps) {
   const currentUser: Record<string, string> = { url: image, alt: 'name' };
   // const userInfo: any = { userName: 'Fox', score: 77, email: 'email@yandex.ru' };
+=======
+import { IProfileProps, IUser } from '../../interfaces/interfaces';
+
+function Profile({ score, onHandleSubmit }: IProfileProps) {
+  // @ts-ignore
+  const { user }: { user: IUser } = useSelector(selectData);
+  const {
+    first_name,
+    second_name,
+    login,
+    avatar,
+  } = user;
+>>>>>>> Stashed changes
   return (
     <Container maxWidth="lg">
       <Box
@@ -47,12 +60,18 @@ function Profile({
             alignItems: 'center',
           }}
         >
-          <Tooltip title="Change avatar">
+          <Tooltip title="Change avatar" placement="top">
             <Badge badgeContent={`${score}`} color="primary">
               <IconButton>
                 <FormDialog
+<<<<<<< Updated upstream
                   alt={currentUser.name}
                   src={currentUser.url}
+=======
+                  onHandleSubmit={onHandleSubmit}
+                  alt={login}
+                  src={`https://ya-praktikum.tech/api/v2/resources/${avatar}`}
+>>>>>>> Stashed changes
                 />
               </IconButton>
             </Badge>

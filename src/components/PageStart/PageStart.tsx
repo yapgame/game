@@ -4,9 +4,9 @@ import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 
-import { IProps } from './IProps';
+import { IStartProps } from '../../interfaces/interfaces';
 
-function PageStart(props: IProps) {
+function PageStart(props: IStartProps) {
   const { handleStartGame } = props;
   return (
     <Container maxWidth="lg">

@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { NavLink } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -13,10 +14,23 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import { mainMenu } from './mainMenu';
-import { userMenu } from './userMenu';
+import { userPrivateMenu } from './userPrivateMenu';
+import { selectData } from '../../user/userSlice';
 
-function ResponsiveAppBar(props: Record<string, string>) {
-  const { name, url } = props;
+interface IUMenu {
+  loggedIn: boolean,
+  name: string,
+  url: string,
+}
+interface IResponsiveAppBar {
+  loggedIn: boolean,
+  handleSignOut: () => void,
+}
+
+function ResponsiveAppBar({ loggedIn, handleSignOut }: IResponsiveAppBar) {
+  console.log(loggedIn);
+  const { user }: any = useSelector(selectData);
+  const { login, avatar } = user;
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -153,45 +167,58 @@ function ResponsiveAppBar(props: Record<string, string>) {
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt={name} src={url} />
-              </IconButton>
-            </Tooltip>
-            <Menu
-              sx={{ mt: '45px' }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-            >
-              {userMenu.map((setting: Record<string, string>) => (
-                <NavLink
-                  key={setting.name}
-                  to={setting.url}
-                  style={{
-                    margin: 0,
-                    fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
-                    fontWeight: 400,
-                    textDecoration: 'none',
-                    color: '#1A2027',
-                  }}
-                >
-                  <MenuItem onClick={handleCloseUserMenu}>
-                    <Typography textAlign="center">{setting.name}</Typography>
-                  </MenuItem>
-                </NavLink>
-              ))}
-            </Menu>
+            {true
+              ? (
+                <>
+                  <Tooltip title="Open settings">
+                    <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                      {avatar !== null
+                        ? (<Avatar alt={login} src={`https://ya-praktikum.tech/api/v2/resources/${avatar}`} />)
+                        : null}
+                    </IconButton>
+                  </Tooltip>
+                  <Menu
+                    sx={{ mt: '45px' }}
+                    id="menu-appbar"
+                    anchorEl={anchorElUser}
+                    anchorOrigin={{
+                      vertical: 'top',
+                      horizontal: 'right',
+                    }}
+                    keepMounted
+                    transformOrigin={{
+                      vertical: 'top',
+                      horizontal: 'right',
+                    }}
+                    open={Boolean(anchorElUser)}
+                    onClose={handleCloseUserMenu}
+                  >
+                    {
+                    userPrivateMenu.map((setting: IUMenu) => (
+                      <NavLink
+                        key={setting.name}
+                        to={setting.url}
+                        style={{
+                          margin: 0,
+                          fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
+                          fontWeight: 400,
+                          textDecoration: 'none',
+                          color: '#1A2027',
+                        }}
+                      >
+                        <MenuItem onClick={handleCloseUserMenu}>
+                          <Typography textAlign="center">{setting.name}</Typography>
+                        </MenuItem>
+                      </NavLink>
+                    ))
+                  }
+                    <MenuItem onClick={handleSignOut}>
+                      <Typography textAlign="center">Logout</Typography>
+                    </MenuItem>
+                  </Menu>
+                </>
+              )
+              : null}
           </Box>
         </Toolbar>
       </Container>

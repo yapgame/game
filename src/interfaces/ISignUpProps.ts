@@ -1,3 +1,3 @@
-export interface IProps {
+export interface ISignUpProps {
   handleSignUp: (data: Record<string, string>) => void,
 }
