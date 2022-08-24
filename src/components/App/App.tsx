@@ -74,7 +74,8 @@ function App() {
     auth
       .changeUserAvatar(data)
       .then((res: Response) => {
-        console.log(res);
+        dispatch(setUserData(res));
+        setLoggedIn(true);
       })
       .catch((err) => {
         console.log(err);
@@ -112,7 +113,9 @@ function App() {
           setLoggedIn(true);
           // navigate(Urls.PROFILE);
         });
+      // eslint-disable-next-line no-dupe-else-if
     }
+    navigate(Urls.PROFILE);
     return () => {
       mountedRef.current = false;
     };

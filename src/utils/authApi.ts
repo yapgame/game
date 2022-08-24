@@ -58,13 +58,9 @@ export class Auth {
 
   async changeUserAvatar(file: any) {
     const data = new FormData();
-    data.append('avatar', file, '2.jpg');
+    data.append('avatar', file );
     const res = await fetch(`${this.options.baseUrl}/user/profile/avatar`, {
       method: Methods.PUT,
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'multipart/form-data',
-      },
       credentials: 'include',
       body: data,
     });
