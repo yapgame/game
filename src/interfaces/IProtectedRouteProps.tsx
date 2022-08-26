@@ -1,4 +1,4 @@
-export interface IProps {
+export interface IProtectedRouteProps {
   loggedIn: boolean,
   children: any,
 }

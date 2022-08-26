@@ -3,14 +3,14 @@ import { Urls } from '../../utils/constants';
 export const mainMenu: Array<Record<string, string>> = [
   {
     name: 'Play',
-    url: Urls.PLAY,
+    url: Urls.MAIN.PLAY,
   },
   {
     name: 'Leaderboard',
-    url: Urls.LEADERBOARD,
+    url: Urls.MAIN.LEADERBOARD,
   },
   {
     name: 'Team',
-    url: Urls.TEAM,
+    url: Urls.MAIN.TEAM,
   },
 ];

@@ -1,26 +1,28 @@
-/* eslint-disable camelcase */
-import React from 'react';
+import React, { useEffect } from 'react';
+import { NavLink } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
-import { NavLink } from 'react-router-dom';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import { IValid } from './IValid';
 import useFormWithValidation from '../../utils/validator';
-import { IProps } from './IProps';
+import useEditProfile from './useEditProfile';
 import { Urls } from '../../utils/constants';
 
-function Profile(props: IProps) {
+import { IValid } from '../../interfaces/interfaces';
+
+import { styleBox, styleNavLink, styleTextField } from './styles';
+
+function ProfileEdit() {
+  const [user, setUser] = useEditProfile();
   const {
-    login = '1',
-    score = '2',
-    email = '3',
     first_name,
     second_name,
     display_name,
+    login,
+    email,
     phone,
-  } = props;
+  } = user;
 
   const {
     values,
@@ -31,44 +33,32 @@ function Profile(props: IProps) {
 
   const handleSubmit = (evt: React.FormEvent) => {
     evt.preventDefault();
-
-    console.log(values);
-    // handleSignIn(values);
+    setUser(values);
   };
 
-  React.useEffect(() => {
-    values.score = score;
+  useEffect(() => {
+    values.login = login;
     values.email = email;
     values.first_name = first_name;
     values.second_name = second_name;
     values.display_name = display_name;
     values.phone = phone;
   }, []);
+
   return (
     <Container maxWidth="lg">
       <Box
         component="form"
         onSubmit={handleSubmit}
         gridColumn="span 1"
-        sx={{
-          display: 'flex',
-          justifyContent: 'center',
-          flexDirection: 'column',
-          textAlign: 'center',
-          alignItems: 'center',
-          minHeight: 800,
-        }}
+        sx={styleBox}
       >
         <Typography variant="h5" gutterBottom component="div">
           Edit profile
         </Typography>
         <TextField
           error={!!errors.login}
-          sx={{
-            m: 2,
-            maxWidth: '40ch',
-            width: '100%',
-          }}
+          sx={styleTextField}
           required
           id="outlined-required"
           label="Login"
@@ -80,11 +70,7 @@ function Profile(props: IProps) {
         />
         <TextField
           error={!!errors.display_name}
-          sx={{
-            m: 2,
-            maxWidth: '40ch',
-            width: '100%',
-          }}
+          sx={styleTextField}
           required
           id="outlined-required"
           label="Display name"
@@ -96,11 +82,7 @@ function Profile(props: IProps) {
         />
         <TextField
           error={!!errors.first_name}
-          sx={{
-            m: 2,
-            maxWidth: '40ch',
-            width: '100%',
-          }}
+          sx={styleTextField}
           required
           id="outlined-required"
           label="First name"
@@ -112,11 +94,7 @@ function Profile(props: IProps) {
         />
         <TextField
           error={!!errors.second_name}
-          sx={{
-            m: 2,
-            maxWidth: '40ch',
-            width: '100%',
-          }}
+          sx={styleTextField}
           required
           id="outlined-required"
           label="Second name"
@@ -128,11 +106,7 @@ function Profile(props: IProps) {
         />
         <TextField
           error={!!errors.email}
-          sx={{
-            m: 2,
-            maxWidth: '40ch',
-            width: '100%',
-          }}
+          sx={styleTextField}
           required
           id="outlined-required"
           label="E-mail"
@@ -144,11 +118,7 @@ function Profile(props: IProps) {
         />
         <TextField
           error={!!errors.phone}
-          sx={{
-            m: 2,
-            maxWidth: '40ch',
-            width: '100%',
-          }}
+          sx={styleTextField}
           required
           id="outlined-required"
           label="Phone"
@@ -161,24 +131,13 @@ function Profile(props: IProps) {
         <Button
           variant="outlined"
           size="large"
-          sx={{
-            m: 4,
-            maxWidth: '43ch',
-            width: '100%',
-          }}
+          sx={styleTextField}
           type="submit"
           disabled={!isValid}
         >
           Save
         </Button>
-        <NavLink
-          to={Urls.BASE}
-          style={{
-            margin: '0',
-            color: '#1976d2',
-            textDecoration: 'none',
-          }}
-        >
+        <NavLink to={Urls.MAIN.INDEX} style={styleNavLink}>
           Back
         </NavLink>
       </Box>
@@ -186,4 +145,4 @@ function Profile(props: IProps) {
   );
 }
 
-export default Profile;
+export default ProfileEdit;

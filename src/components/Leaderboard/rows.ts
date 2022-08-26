@@ -3,11 +3,7 @@ function createData(
   userName: string,
   score: number,
 ) {
-  return {
-    id,
-    userName,
-    score,
-  };
+  return { id, userName, score };
 }
 
 export const rows = [

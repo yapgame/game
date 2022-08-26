@@ -1,23 +1,33 @@
-import * as React from 'react';
+/* eslint-disable no-use-before-define */
+import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import Avatar from '@mui/material/Avatar';
-import { IValid } from './IValid';
-import useFormWithValidation from '../../utils/validator';
+import { Urls } from '../../utils/constants';
+import { selectData } from '../../user/userSlice';
 
-export default function FormDialog({ alt, src }: Record<string, string>) {
-  const {
-    values,
-    errors,
-    isValid,
-    handleChange,
-  }: IValid = useFormWithValidation();
-  const [open, setOpen] = React.useState(false);
+import { IFormDialogProps, IOUser } from '../../interfaces/interfaces';
+
+import { styleAvatar, styleFormDialogBox, styleFormDialogButton } from './styles';
+
+export default function FormDialog(props: IFormDialogProps) {
+  const { onHandleSubmit } = props;
+  const [open, setOpen] = useState(false);
+  const [file, setFile] = useState<File|null>(null);
+  const [isValid, setIsValid] = useState(false);
+
+  const user = useSelector(selectData) as unknown as IOUser;
+  const { login, avatar } = user.user;
+
+  React.useEffect(() => {
+    if (file) {
+      setIsValid(true);
+    }
+  }, [file]);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -25,66 +35,58 @@ export default function FormDialog({ alt, src }: Record<string, string>) {
 
   const handleSubmit = (evt: React.FormEvent) => {
     evt.preventDefault();
-    console.log(values);
-    // eslint-disable-next-line no-use-before-define
     handleClose();
-    // handleSignIn(values);
+    onHandleSubmit(file!);
   };
+
   const handleClose = () => {
     setOpen(false);
   };
 
+  const uploadFile = (evt: React.FormEvent<HTMLInputElement>) => {
+    const input = evt.target as HTMLInputElement;
+    setFile(input.files![0]);
+  };
+
   return (
     <div>
-      <Avatar
-        onClick={handleClickOpen}
-        sx={{
-          height: 100,
-          width: 100,
-        }}
-        alt={alt}
-        src={src}
-      />
+      {
+        avatar !== null && avatar !== undefined
+          ? (
+            <Avatar
+              onClick={handleClickOpen}
+              sx={styleAvatar}
+              alt={login}
+              src={`${Urls.SHARE.FILES}${avatar}`}
+            />
+          )
+          : null
+      }
 
-      <Dialog
-        open={open}
-        onClose={handleClose}
-      >
+      <Dialog open={open} onClose={handleClose}>
         <Box
-          sx={{
-            width: '60ch',
-          }}
+          sx={styleFormDialogBox}
           component="form"
+          onSubmit={handleSubmit}
         >
           <DialogTitle>Avatar</DialogTitle>
-          <DialogContent>
-            <TextField
-              onChange={handleChange}
-              error={!!errors.avatar}
-              helperText={errors.avatar}
-              sx={{
-                width: '100%',
-              }}
-              autoComplete="off"
-              autoFocus
-              margin="dense"
-              name="avatar"
-              id="outlined-required"
-              defaultValue=""
-              label="Url link"
-              type="url"
-              fullWidth
-            />
-          </DialogContent>
           <DialogActions>
             <Button
-              sx={{
-                m: 2,
-                width: '100%',
-              }}
+              sx={styleFormDialogButton}
+              variant="outlined"
+              size="large"
+              component="label"
+              htmlFor="upload"
+            >
+              Сhoose
+              <input id="upload" type="file" hidden onChange={uploadFile} />
+            </Button>
+            <Button
+              sx={styleFormDialogButton}
               variant="outlined"
               size="large"
               onClick={handleSubmit}
+              type="submit"
               disabled={!isValid}
             >
               Update

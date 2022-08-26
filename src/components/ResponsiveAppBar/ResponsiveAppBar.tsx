@@ -1,5 +1,6 @@
-import * as React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { NavLink } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -13,24 +14,61 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import { mainMenu } from './mainMenu';
-import { userMenu } from './userMenu';
+import { userPrivateMenu } from './userPrivateMenu';
+import { selectData } from '../../user/userSlice';
+import { Urls } from '../../utils/constants';
 
-function ResponsiveAppBar(props: Record<string, string>) {
-  const { name, url } = props;
+import {
+  styleNavLink,
+  styleNavLinkWhite,
+  styleTypography,
+  styleBox,
+  styleTypographyH5,
+} from './styles';
+
+import { IResponsiveAppBar, IUMenu, IOUser } from '../../interfaces/interfaces';
+
+function ResponsiveAppBar({ loggedIn, handleSignOut }: IResponsiveAppBar) {
+  const mountedRef = useRef(false);
+
+  const data = useSelector(selectData) as unknown as IOUser;
+  const { login, avatar } = data.user;
+
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
+
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
   };
+
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
   };
+
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
   };
+
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+
+  useEffect(() => {
+    mountedRef.current = true;
+    setAnchorElUser(null);
+    return () => {
+      mountedRef.current = false;
+    };
+  }, [avatar]);
+
+  useEffect(() => {
+    mountedRef.current = true;
+    setAnchorElUser(null);
+    return () => {
+      mountedRef.current = false;
+    };
+  }, [loggedIn]);
+
   return (
     <AppBar position="static">
       <Container maxWidth="xl">
@@ -40,27 +78,11 @@ function ResponsiveAppBar(props: Record<string, string>) {
             noWrap
             component="a"
             href="/"
-            sx={{
-              mr: 2,
-              display: { xs: 'none', md: 'flex' },
-              fontFamily: 'monospace',
-              fontWeight: 700,
-              letterSpacing: '.3rem',
-              color: 'inherit',
-              textDecoration: 'none',
-            }}
+            sx={styleTypography}
           >
             CROCO
           </Typography>
-          <Box
-            sx={{
-              flexGrow: 1,
-              display: {
-                xs: 'flex',
-                md: 'none',
-              },
-            }}
-          >
+          <Box sx={styleBox}>
             <IconButton
               size="large"
               aria-label="account of current user"
@@ -93,18 +115,10 @@ function ResponsiveAppBar(props: Record<string, string>) {
                 <NavLink
                   key={page.name}
                   to={page.url}
-                  style={{
-                    margin: 0,
-                    fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
-                    fontWeight: 400,
-                    textDecoration: 'none',
-                    color: '#1A2027',
-                  }}
+                  style={styleNavLink}
                 >
                   <MenuItem key={page.name} onClick={handleCloseNavMenu}>
-                    <Typography
-                      textAlign="center"
-                    >
+                    <Typography textAlign="center">
                       {page.name}
                     </Typography>
                   </MenuItem>
@@ -117,16 +131,7 @@ function ResponsiveAppBar(props: Record<string, string>) {
             noWrap
             component="a"
             href=""
-            sx={{
-              mr: 2,
-              display: { xs: 'flex', md: 'none' },
-              flexGrow: 1,
-              fontFamily: 'monospace',
-              fontWeight: 700,
-              letterSpacing: '.3rem',
-              color: 'inherit',
-              textDecoration: 'none',
-            }}
+            sx={styleTypographyH5}
           >
             CROCO
           </Typography>
@@ -140,11 +145,7 @@ function ResponsiveAppBar(props: Record<string, string>) {
                 <NavLink
                   key={page.name}
                   to={page.url}
-                  style={{
-                    color: 'white',
-                    display: 'block',
-                    textDecoration: 'none',
-                  }}
+                  style={styleNavLinkWhite}
                 >
                   {page.name}
                 </NavLink>
@@ -152,47 +153,52 @@ function ResponsiveAppBar(props: Record<string, string>) {
             ))}
           </Box>
 
-          <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt={name} src={url} />
-              </IconButton>
-            </Tooltip>
-            <Menu
-              sx={{ mt: '45px' }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-            >
-              {userMenu.map((setting: Record<string, string>) => (
-                <NavLink
-                  key={setting.name}
-                  to={setting.url}
-                  style={{
-                    margin: 0,
-                    fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
-                    fontWeight: 400,
-                    textDecoration: 'none',
-                    color: '#1A2027',
+          {loggedIn
+            ? (
+              <Box sx={{ flexGrow: 0 }}>
+                <Tooltip title="Open settings">
+                  <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                    {avatar !== null && avatar !== undefined
+                      ? (<Avatar alt={login} src={`${Urls.SHARE.FILES}${avatar}`} />)
+                      : null}
+                  </IconButton>
+                </Tooltip>
+                <Menu
+                  sx={{ mt: '45px' }}
+                  id="menu-appbar"
+                  anchorEl={anchorElUser}
+                  anchorOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
                   }}
+                  keepMounted
+                  transformOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                  }}
+                  open={Boolean(anchorElUser)}
+                  onClose={handleCloseUserMenu}
                 >
-                  <MenuItem onClick={handleCloseUserMenu}>
-                    <Typography textAlign="center">{setting.name}</Typography>
+                  {
+                    userPrivateMenu.map((setting: IUMenu) => (
+                      <NavLink
+                        key={setting.name}
+                        to={setting.url}
+                        style={styleNavLink}
+                      >
+                        <MenuItem onClick={handleCloseUserMenu}>
+                          <Typography textAlign="center">{setting.name}</Typography>
+                        </MenuItem>
+                      </NavLink>
+                    ))
+                  }
+                  <MenuItem onClick={handleSignOut}>
+                    <Typography textAlign="center">Logout</Typography>
                   </MenuItem>
-                </NavLink>
-              ))}
-            </Menu>
-          </Box>
+                </Menu>
+              </Box>
+            )
+            : null}
         </Toolbar>
       </Container>
     </AppBar>

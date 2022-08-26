@@ -3,11 +3,15 @@ import CssBaseline from '@mui/material/CssBaseline';
 import {
   Route,
   Routes,
+  useNavigate,
+  useLocation,
 } from 'react-router-dom';
+
+import { useDispatch } from 'react-redux';
+import { setUserData } from '../../user/userSlice';
+
 import Leaderboard from '../Leaderboard/Leaderboard';
 import PageStart from '../PageStart/PageStart';
-import NotFound from '../Errors/NotFound';
-import InternalServerError from '../Errors/InternalServerError';
 import ResponsiveAppBar from '../ResponsiveAppBar/ResponsiveAppBar';
 import Footer from '../Footer/Footer';
 import SignUp from '../PageSignUp/SignUp';
@@ -16,141 +20,152 @@ import Profile from '../Profile/Profile';
 import ProfileEdit from '../Profile/ProfileEdit';
 import Team from '../Team/Team';
 import Game from '../Game/Game';
+import NotFound from '../Errors/NotFound';
+import InternalServerError from '../Errors/InternalServerError';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 
 import { Urls } from '../../utils/constants';
-import { IUser } from './IUser';
-
-import image from '../../images/2.jpg';
 
 import auth from '../../utils/authApi';
 
 function App() {
-  const currentUser: Record<string, string> = { url: image as string, alt: 'name' };
-  const userInfo: IUser = {
-    first_name: 'Martin',
-    second_name: 'Brest',
-    display_name: 'Rudy',
-    login: 'Fox',
-    score: '77',
-    email: 'email@yandex.ru',
-    phone: '1234567890',
-  };
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const location = useLocation();
   const mountedRef = useRef(false);
   const [loggedIn, setLoggedIn] = React.useState(false);
+
   const handleSignUp = (data: Record<string, string>) => {
-    // eslint-disable-next-line no-console
-    console.log(data);
     auth
       .signUp(data)
       .then((res: Response) => {
+        navigate(Urls.SIGN.IN);
         console.log(res);
       })
       .catch((err) => {
         console.log(err);
       });
   };
+
   const handleSignIn = (data: Record<string, string>) => {
-    // eslint-disable-next-line no-console
-    console.log(data);
     auth
       .signIn(data)
-      .then((res: Response) => {
-        console.log(res);
+      .then(() => {
+        setLoggedIn(true);
+      })
+      .then(() => {
+        navigate(Urls.PROFILE.INDEX);
+        auth
+          .getUser()
+          .then((user) => {
+            dispatch(setUserData(user));
+            setLoggedIn(true);
+            navigate(Urls.PROFILE.INDEX);
+          });
       })
       .catch((err) => {
         console.log(err);
       });
   };
-  // const handleSignOut = () => {
-  //   // eslint-disable-next-line no-console
-  //   console.log('handleSignOut');
-  // };
-  const handleStartGame = () => {
-    // eslint-disable-next-line no-console
-    console.log('start');
+
+  const handleSignOut = () => {
+    auth
+      .signOut()
+      .then(() => {
+        setLoggedIn(false);
+      })
+      .then(() => {
+        navigate(Urls.SIGN.IN);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    console.log('handleSignOut');
   };
+
   useEffect(() => {
     mountedRef.current = true;
-    setLoggedIn(true); // !!!
+
+    if (location.pathname === Urls.SIGN.IN
+      || location.pathname === Urls.SIGN.UP) {
+      auth
+        .getUser()
+        .then((user) => {
+          dispatch(setUserData(user));
+          setLoggedIn(true);
+        });
+      navigate(Urls.PROFILE.INDEX);
+    } else {
+      navigate(location.pathname);
+    }
+
     return () => {
       mountedRef.current = false;
     };
-  }, []);
+  }, [loggedIn]);
+
   return (
     <>
       <CssBaseline />
-      <ResponsiveAppBar {...currentUser} />
+      <ResponsiveAppBar
+        handleSignOut={handleSignOut}
+        loggedIn={loggedIn}
+      />
       <Routes>
         <Route
-          path={Urls.BASE}
+          path={Urls.SIGN.UP}
           element={(
-            <ProtectedRoute
-              loggedIn={loggedIn}
-            >
+            <SignUp handleSignUp={handleSignUp} />
+          )}
+        />
+        <Route
+          path={Urls.SIGN.IN}
+          element={(
+            <SignIn handleSignIn={handleSignIn} />
+          )}
+        />
+        <Route
+          path={Urls.MAIN.INDEX}
+          element={(
+            <ProtectedRoute loggedIn={loggedIn}>
               <Game />
             </ProtectedRoute>
           )}
         />
         <Route
-          path={Urls.PROFILE_EDIT}
+          path={Urls.PROFILE.EDIT}
           element={(
-            <ProtectedRoute
-              loggedIn={loggedIn}
-            >
-              <ProfileEdit {...userInfo} />
+            <ProtectedRoute loggedIn={loggedIn}>
+              <ProfileEdit />
             </ProtectedRoute>
           )}
         />
         <Route
-          path={Urls.PROFILE}
+          path={Urls.PROFILE.INDEX}
           element={(
-            <ProtectedRoute
-              loggedIn={loggedIn}
-            >
-              <Profile {...userInfo} />
-            </ProtectedRoute>
-          )}
-        />
-
-        <Route
-          path={Urls.PLAY}
-          element={(
-            <ProtectedRoute
-              loggedIn={loggedIn}
-            >
-              <PageStart
-                handleStartGame={handleStartGame}
-              />
+            <ProtectedRoute loggedIn={loggedIn}>
+              <Profile />
             </ProtectedRoute>
           )}
         />
         <Route
-          path={Urls.SIGNUP}
+          path={Urls.MAIN.PLAY}
           element={(
-            <SignUp
-              handleSignUp={handleSignUp}
-            />
+            <ProtectedRoute loggedIn={loggedIn}>
+              <PageStart />
+            </ProtectedRoute>
           )}
         />
         <Route
-          path={Urls.SIGNIN}
-          element={(
-            <SignIn
-              handleSignIn={handleSignIn}
-            />
-          )}
-        />
-        <Route
-          path={Urls.LEADERBOARD}
+          path={Urls.MAIN.LEADERBOARD}
           element={(<Leaderboard />)}
         />
         <Route
-          path={Urls.TEAM}
+          path={Urls.MAIN.TEAM}
           element={(<Team />)}
         />
         <Route
-          path={Urls.INTERNAL_SERVER_ERROR}
+          path={Urls.ERROR.INTERNAL_SERVER}
           element={(<InternalServerError />)}
         />
         <Route
