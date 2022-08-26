@@ -6,3 +6,7 @@ export { IProfileProps } from './IProfileProps';
 export { IUser } from './IUser';
 export { IProtectedRouteProps } from './IProtectedRouteProps';
 export { IOption } from './IOption';
+export { IResponsiveAppBar } from './IResponsiveAppBar';
+export { IUMenu } from './IUMenu';
+export { IFormDialogProps } from './IFormDialogProps';
+export { IOUser } from './IOUser';

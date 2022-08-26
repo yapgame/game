@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { NavLink } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import AppBar from '@mui/material/AppBar';
@@ -16,35 +16,59 @@ import MenuItem from '@mui/material/MenuItem';
 import { mainMenu } from './mainMenu';
 import { userPrivateMenu } from './userPrivateMenu';
 import { selectData } from '../../user/userSlice';
+import { Urls } from '../../utils/constants';
 
-interface IUMenu {
-  loggedIn: boolean,
-  name: string,
-  url: string,
-}
-interface IResponsiveAppBar {
-  loggedIn: boolean,
-  handleSignOut: () => void,
-}
+import {
+  styleNavLink,
+  styleNavLinkWhite,
+  styleTypography,
+  styleBox,
+  styleTypographyH5,
+} from './styles';
+
+import { IResponsiveAppBar, IUMenu, IOUser } from '../../interfaces/interfaces';
 
 function ResponsiveAppBar({ loggedIn, handleSignOut }: IResponsiveAppBar) {
-  console.log(loggedIn);
-  const { user }: any = useSelector(selectData);
-  const { login, avatar } = user;
+  const mountedRef = useRef(false);
+
+  const data = useSelector(selectData) as unknown as IOUser;
+  const { login, avatar } = data.user;
+
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
+
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
   };
+
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
   };
+
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
   };
+
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+
+  useEffect(() => {
+    mountedRef.current = true;
+    setAnchorElUser(null);
+    return () => {
+      mountedRef.current = false;
+    };
+  }, [avatar]);
+
+  useEffect(() => {
+    mountedRef.current = true;
+    setAnchorElUser(null);
+    return () => {
+      mountedRef.current = false;
+    };
+  }, [loggedIn]);
+
   return (
     <AppBar position="static">
       <Container maxWidth="xl">
@@ -54,27 +78,11 @@ function ResponsiveAppBar({ loggedIn, handleSignOut }: IResponsiveAppBar) {
             noWrap
             component="a"
             href="/"
-            sx={{
-              mr: 2,
-              display: { xs: 'none', md: 'flex' },
-              fontFamily: 'monospace',
-              fontWeight: 700,
-              letterSpacing: '.3rem',
-              color: 'inherit',
-              textDecoration: 'none',
-            }}
+            sx={styleTypography}
           >
             CROCO
           </Typography>
-          <Box
-            sx={{
-              flexGrow: 1,
-              display: {
-                xs: 'flex',
-                md: 'none',
-              },
-            }}
-          >
+          <Box sx={styleBox}>
             <IconButton
               size="large"
               aria-label="account of current user"
@@ -107,18 +115,10 @@ function ResponsiveAppBar({ loggedIn, handleSignOut }: IResponsiveAppBar) {
                 <NavLink
                   key={page.name}
                   to={page.url}
-                  style={{
-                    margin: 0,
-                    fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
-                    fontWeight: 400,
-                    textDecoration: 'none',
-                    color: '#1A2027',
-                  }}
+                  style={styleNavLink}
                 >
                   <MenuItem key={page.name} onClick={handleCloseNavMenu}>
-                    <Typography
-                      textAlign="center"
-                    >
+                    <Typography textAlign="center">
                       {page.name}
                     </Typography>
                   </MenuItem>
@@ -131,16 +131,7 @@ function ResponsiveAppBar({ loggedIn, handleSignOut }: IResponsiveAppBar) {
             noWrap
             component="a"
             href=""
-            sx={{
-              mr: 2,
-              display: { xs: 'flex', md: 'none' },
-              flexGrow: 1,
-              fontFamily: 'monospace',
-              fontWeight: 700,
-              letterSpacing: '.3rem',
-              color: 'inherit',
-              textDecoration: 'none',
-            }}
+            sx={styleTypographyH5}
           >
             CROCO
           </Typography>
@@ -154,11 +145,7 @@ function ResponsiveAppBar({ loggedIn, handleSignOut }: IResponsiveAppBar) {
                 <NavLink
                   key={page.name}
                   to={page.url}
-                  style={{
-                    color: 'white',
-                    display: 'block',
-                    textDecoration: 'none',
-                  }}
+                  style={styleNavLinkWhite}
                 >
                   {page.name}
                 </NavLink>
@@ -166,45 +153,38 @@ function ResponsiveAppBar({ loggedIn, handleSignOut }: IResponsiveAppBar) {
             ))}
           </Box>
 
-          <Box sx={{ flexGrow: 0 }}>
-            {true
-              ? (
-                <>
-                  <Tooltip title="Open settings">
-                    <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                      {avatar !== null
-                        ? (<Avatar alt={login} src={`https://ya-praktikum.tech/api/v2/resources/${avatar}`} />)
-                        : null}
-                    </IconButton>
-                  </Tooltip>
-                  <Menu
-                    sx={{ mt: '45px' }}
-                    id="menu-appbar"
-                    anchorEl={anchorElUser}
-                    anchorOrigin={{
-                      vertical: 'top',
-                      horizontal: 'right',
-                    }}
-                    keepMounted
-                    transformOrigin={{
-                      vertical: 'top',
-                      horizontal: 'right',
-                    }}
-                    open={Boolean(anchorElUser)}
-                    onClose={handleCloseUserMenu}
-                  >
-                    {
+          {loggedIn
+            ? (
+              <Box sx={{ flexGrow: 0 }}>
+                <Tooltip title="Open settings">
+                  <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                    {avatar !== null && avatar !== undefined
+                      ? (<Avatar alt={login} src={`${Urls.SHARE.FILES}${avatar}`} />)
+                      : null}
+                  </IconButton>
+                </Tooltip>
+                <Menu
+                  sx={{ mt: '45px' }}
+                  id="menu-appbar"
+                  anchorEl={anchorElUser}
+                  anchorOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                  }}
+                  keepMounted
+                  transformOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                  }}
+                  open={Boolean(anchorElUser)}
+                  onClose={handleCloseUserMenu}
+                >
+                  {
                     userPrivateMenu.map((setting: IUMenu) => (
                       <NavLink
                         key={setting.name}
                         to={setting.url}
-                        style={{
-                          margin: 0,
-                          fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
-                          fontWeight: 400,
-                          textDecoration: 'none',
-                          color: '#1A2027',
-                        }}
+                        style={styleNavLink}
                       >
                         <MenuItem onClick={handleCloseUserMenu}>
                           <Typography textAlign="center">{setting.name}</Typography>
@@ -212,14 +192,13 @@ function ResponsiveAppBar({ loggedIn, handleSignOut }: IResponsiveAppBar) {
                       </NavLink>
                     ))
                   }
-                    <MenuItem onClick={handleSignOut}>
-                      <Typography textAlign="center">Logout</Typography>
-                    </MenuItem>
-                  </Menu>
-                </>
-              )
-              : null}
-          </Box>
+                  <MenuItem onClick={handleSignOut}>
+                    <Typography textAlign="center">Logout</Typography>
+                  </MenuItem>
+                </Menu>
+              </Box>
+            )
+            : null}
         </Toolbar>
       </Container>
     </AppBar>

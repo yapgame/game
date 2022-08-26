@@ -1,20 +1,16 @@
 import { Urls } from '../../utils/constants';
 
-interface IUMenu {
-  loggedIn: boolean,
-  name: string,
-  url: string,
-}
+import { IUMenu } from '../../interfaces/interfaces';
 
 export const userPrivateMenu: Array<IUMenu> = [
   {
     loggedIn: true,
     name: 'Profile',
-    url: Urls.PROFILE,
+    url: Urls.PROFILE.INDEX,
   },
   {
     loggedIn: true,
     name: 'Edit',
-    url: Urls.PROFILE_EDIT,
+    url: Urls.PROFILE.EDIT,
   },
 ];

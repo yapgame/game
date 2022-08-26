@@ -1,9 +1,7 @@
-/* eslint-disable react/destructuring-assignment */
 import React, { Component, ErrorInfo, ReactNode } from 'react';
 import Alert from '@mui/material/Alert';
 
 interface Props {
-  // eslint-disable-next-line react/require-default-props
   children?: ReactNode;
 }
 
@@ -12,7 +10,6 @@ interface State {
 }
 
 class ErrorBoundary extends Component<Props, State> {
-  // eslint-disable-next-line react/state-in-constructor
   public state: State = {
     hasError: false,
   };
@@ -26,10 +23,12 @@ class ErrorBoundary extends Component<Props, State> {
   }
 
   public render() {
-    if (this.state.hasError) {
+    const { hasError } = this.state;
+    const { children } = this.props;
+    if (hasError) {
       return <Alert severity="error">Sorry.. there was an error</Alert>;
     }
-    return this.props.children;
+    return children;
   }
 }
 

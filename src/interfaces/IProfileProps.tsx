@@ -1,4 +1,4 @@
 export interface IProfileProps {
   score: string,
-  onHandleSubmit: (data: any) => void,
+  // onHandleSubmit: (data: any) => void,
 }

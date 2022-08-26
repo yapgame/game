@@ -1,21 +1,20 @@
-/* eslint-disable camelcase */
-import React from 'react';
-import { useSelector } from 'react-redux';
+import React, { useEffect } from 'react';
+import { NavLink } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
-import { NavLink } from 'react-router-dom';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import { selectData } from '../../user/userSlice';
 import useFormWithValidation from '../../utils/validator';
+import useEditProfile from './useEditProfile';
 import { Urls } from '../../utils/constants';
 
-import { IProfileProps, IUser, IValid } from '../../interfaces/interfaces';
+import { IValid } from '../../interfaces/interfaces';
 
-function ProfileEdit(props: IProfileProps) {
-  // @ts-ignore
-  const { user }: { user: IUser } = useSelector(selectData);
+import { styleBox, styleNavLink, styleTextField } from './styles';
+
+function ProfileEdit() {
+  const [user, setUser] = useEditProfile();
   const {
     first_name,
     second_name,
@@ -24,9 +23,6 @@ function ProfileEdit(props: IProfileProps) {
     email,
     phone,
   } = user;
-  const {
-    onHandleSubmit,
-  } = props;
 
   const {
     values,
@@ -37,11 +33,10 @@ function ProfileEdit(props: IProfileProps) {
 
   const handleSubmit = (evt: React.FormEvent) => {
     evt.preventDefault();
-    // eslint-disable-next-line no-undef
-    onHandleSubmit(values);
+    setUser(values);
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     values.login = login;
     values.email = email;
     values.first_name = first_name;
@@ -49,31 +44,21 @@ function ProfileEdit(props: IProfileProps) {
     values.display_name = display_name;
     values.phone = phone;
   }, []);
+
   return (
     <Container maxWidth="lg">
       <Box
         component="form"
         onSubmit={handleSubmit}
         gridColumn="span 1"
-        sx={{
-          display: 'flex',
-          justifyContent: 'center',
-          flexDirection: 'column',
-          textAlign: 'center',
-          alignItems: 'center',
-          minHeight: 800,
-        }}
+        sx={styleBox}
       >
         <Typography variant="h5" gutterBottom component="div">
           Edit profile
         </Typography>
         <TextField
           error={!!errors.login}
-          sx={{
-            m: 2,
-            maxWidth: '40ch',
-            width: '100%',
-          }}
+          sx={styleTextField}
           required
           id="outlined-required"
           label="Login"
@@ -85,11 +70,7 @@ function ProfileEdit(props: IProfileProps) {
         />
         <TextField
           error={!!errors.display_name}
-          sx={{
-            m: 2,
-            maxWidth: '40ch',
-            width: '100%',
-          }}
+          sx={styleTextField}
           required
           id="outlined-required"
           label="Display name"
@@ -101,11 +82,7 @@ function ProfileEdit(props: IProfileProps) {
         />
         <TextField
           error={!!errors.first_name}
-          sx={{
-            m: 2,
-            maxWidth: '40ch',
-            width: '100%',
-          }}
+          sx={styleTextField}
           required
           id="outlined-required"
           label="First name"
@@ -117,11 +94,7 @@ function ProfileEdit(props: IProfileProps) {
         />
         <TextField
           error={!!errors.second_name}
-          sx={{
-            m: 2,
-            maxWidth: '40ch',
-            width: '100%',
-          }}
+          sx={styleTextField}
           required
           id="outlined-required"
           label="Second name"
@@ -133,11 +106,7 @@ function ProfileEdit(props: IProfileProps) {
         />
         <TextField
           error={!!errors.email}
-          sx={{
-            m: 2,
-            maxWidth: '40ch',
-            width: '100%',
-          }}
+          sx={styleTextField}
           required
           id="outlined-required"
           label="E-mail"
@@ -149,11 +118,7 @@ function ProfileEdit(props: IProfileProps) {
         />
         <TextField
           error={!!errors.phone}
-          sx={{
-            m: 2,
-            maxWidth: '40ch',
-            width: '100%',
-          }}
+          sx={styleTextField}
           required
           id="outlined-required"
           label="Phone"
@@ -166,24 +131,13 @@ function ProfileEdit(props: IProfileProps) {
         <Button
           variant="outlined"
           size="large"
-          sx={{
-            m: 4,
-            maxWidth: '43ch',
-            width: '100%',
-          }}
+          sx={styleTextField}
           type="submit"
           disabled={!isValid}
         >
           Save
         </Button>
-        <NavLink
-          to={Urls.BASE}
-          style={{
-            margin: '0',
-            color: '#1976d2',
-            textDecoration: 'none',
-          }}
-        >
+        <NavLink to={Urls.MAIN.INDEX} style={styleNavLink}>
           Back
         </NavLink>
       </Box>

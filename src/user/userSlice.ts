@@ -1,9 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import { IUser } from '../interfaces/IUser';
+import { IOUser } from '../interfaces/interfaces';
 
-// eslint-disable-next-line @typescript-eslint/ban-types
-const initialState: { user: IUser } = {
+const initialState: IOUser = {
   user: {
     id: 0,
     first_name: 'string',
@@ -17,7 +16,7 @@ const initialState: { user: IUser } = {
 };
 
 const userSlice = createSlice({
-  name: 'currentUser',
+  name: 'user',
   initialState,
   reducers: {
     setUserData: (state, action) => {
@@ -28,6 +27,6 @@ const userSlice = createSlice({
 });
 
 export const { setUserData } = userSlice.actions;
-export const selectData = (state: { currentUser: IUser; }) => state.currentUser;
+export const selectData = (state: IOUser) => state.user;
 
 export default userSlice.reducer;

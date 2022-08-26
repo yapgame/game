@@ -25,13 +25,13 @@ import InternalServerError from '../Errors/InternalServerError';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 
 import { Urls } from '../../utils/constants';
+
 import auth from '../../utils/authApi';
 
 function App() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const location = useLocation();
-  const score = '77';
   const mountedRef = useRef(false);
   const [loggedIn, setLoggedIn] = React.useState(false);
 
@@ -39,7 +39,7 @@ function App() {
     auth
       .signUp(data)
       .then((res: Response) => {
-        navigate(Urls.SIGNIN);
+        navigate(Urls.SIGN.IN);
         console.log(res);
       })
       .catch((err) => {
@@ -52,30 +52,16 @@ function App() {
       .signIn(data)
       .then(() => {
         setLoggedIn(true);
-        navigate(Urls.PROFILE);
       })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
-  const handleEditProfile = (data: Record<string, string>) => {
-    auth
-      .changeUserInfo(data)
-      .then((res: Response) => {
-        console.log(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
-  const handleEditAvatar = (data: File) => {
-    auth
-      .changeUserAvatar(data)
-      .then((res: Response) => {
-        dispatch(setUserData(res));
-        setLoggedIn(true);
+      .then(() => {
+        navigate(Urls.PROFILE.INDEX);
+        auth
+          .getUser()
+          .then((user) => {
+            dispatch(setUserData(user));
+            setLoggedIn(true);
+            navigate(Urls.PROFILE.INDEX);
+          });
       })
       .catch((err) => {
         console.log(err);
@@ -87,39 +73,37 @@ function App() {
       .signOut()
       .then(() => {
         setLoggedIn(false);
-        navigate(Urls.SIGNIN);
+      })
+      .then(() => {
+        navigate(Urls.SIGN.IN);
       })
       .catch((err) => {
         console.log(err);
       });
-    // eslint-disable-next-line no-console
     console.log('handleSignOut');
-  };
-
-  const handleStartGame = () => {
-    // eslint-disable-next-line no-console
-    console.log('start');
   };
 
   useEffect(() => {
     mountedRef.current = true;
-    if (location.pathname === Urls.PROFILE
-      || location.pathname === Urls.PROFILE_EDIT
-      || location.pathname === Urls.PLAY) {
+
+    if (location.pathname === Urls.SIGN.IN
+      || location.pathname === Urls.SIGN.UP) {
       auth
         .getUser()
         .then((user) => {
           dispatch(setUserData(user));
           setLoggedIn(true);
-          // navigate(Urls.PROFILE);
         });
-      // eslint-disable-next-line no-dupe-else-if
+      navigate(Urls.PROFILE.INDEX);
+    } else {
+      navigate(location.pathname);
     }
-    navigate(Urls.PROFILE);
+
     return () => {
       mountedRef.current = false;
     };
   }, [loggedIn]);
+
   return (
     <>
       <CssBaseline />
@@ -129,79 +113,59 @@ function App() {
       />
       <Routes>
         <Route
-          path={Urls.SIGNUP}
+          path={Urls.SIGN.UP}
           element={(
-            <SignUp
-              handleSignUp={handleSignUp}
-            />
+            <SignUp handleSignUp={handleSignUp} />
           )}
         />
         <Route
-          path={Urls.SIGNIN}
+          path={Urls.SIGN.IN}
           element={(
-            <SignIn
-              handleSignIn={handleSignIn}
-            />
+            <SignIn handleSignIn={handleSignIn} />
           )}
         />
         <Route
-          path={Urls.BASE}
+          path={Urls.MAIN.INDEX}
           element={(
-            <ProtectedRoute
-              loggedIn={loggedIn}
-            >
+            <ProtectedRoute loggedIn={loggedIn}>
               <Game />
             </ProtectedRoute>
           )}
         />
         <Route
-          path={Urls.PROFILE_EDIT}
+          path={Urls.PROFILE.EDIT}
           element={(
-            <ProtectedRoute
-              loggedIn={loggedIn}
-            >
-              <ProfileEdit
-                onHandleSubmit={handleEditProfile}
-                score={score}
-              />
+            <ProtectedRoute loggedIn={loggedIn}>
+              <ProfileEdit />
             </ProtectedRoute>
           )}
         />
         <Route
-          path={Urls.PROFILE}
+          path={Urls.PROFILE.INDEX}
           element={(
-            <ProtectedRoute
-              loggedIn={loggedIn}
-            >
-              <Profile
-                onHandleSubmit={handleEditAvatar}
-                score={score}
-              />
+            <ProtectedRoute loggedIn={loggedIn}>
+              <Profile />
             </ProtectedRoute>
           )}
         />
         <Route
-          path={Urls.PLAY}
+          path={Urls.MAIN.PLAY}
           element={(
-            <ProtectedRoute
-              loggedIn={loggedIn}
-            >
-              <PageStart
-                handleStartGame={handleStartGame}
-              />
+            <ProtectedRoute loggedIn={loggedIn}>
+              <PageStart />
             </ProtectedRoute>
           )}
         />
         <Route
-          path={Urls.LEADERBOARD}
+          path={Urls.MAIN.LEADERBOARD}
           element={(<Leaderboard />)}
         />
         <Route
-          path={Urls.TEAM}
+          path={Urls.MAIN.TEAM}
           element={(<Team />)}
         />
         <Route
-          path={Urls.INTERNAL_SERVER_ERROR}
+          path={Urls.ERROR.INTERNAL_SERVER}
           element={(<InternalServerError />)}
         />
         <Route
