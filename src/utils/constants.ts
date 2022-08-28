@@ -3,6 +3,7 @@ export const Urls = {
     INDEX: '/',
     TEAM: '/team',
     PLAY: '/play',
+    GAME: '/game',
     LEADERBOARD: '/leaderboard',
   },
   SIGN: {
@@ -12,7 +13,7 @@ export const Urls = {
   },
   PROFILE: {
     INDEX: '/profile',
-    EDIT: '/profile-edit',
+    EDIT: '/profile/edit',
   },
   ERROR: {
     INTERNAL_SERVER: '/internal-server-error',

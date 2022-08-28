@@ -85,19 +85,18 @@ function App() {
 
   useEffect(() => {
     mountedRef.current = true;
-
-    if (location.pathname === Urls.SIGN.IN
-      || location.pathname === Urls.SIGN.UP) {
-      auth
-        .getUser()
-        .then((user) => {
-          dispatch(setUserData(user));
-          setLoggedIn(true);
-        });
-      navigate(Urls.PROFILE.INDEX);
-    } else {
-      navigate(location.pathname);
-    }
+    auth
+      .getUser()
+      .then((user) => {
+        dispatch(setUserData(user));
+        setLoggedIn(true);
+        if (location.pathname === Urls.SIGN.IN
+          || location.pathname === Urls.SIGN.UP) {
+          navigate(Urls.PROFILE.INDEX);
+        } else {
+          navigate(location.pathname);
+        }
+      });
 
     return () => {
       mountedRef.current = false;
@@ -125,7 +124,7 @@ function App() {
           )}
         />
         <Route
-          path={Urls.MAIN.INDEX}
+          path={Urls.MAIN.GAME}
           element={(
             <ProtectedRoute loggedIn={loggedIn}>
               <Game />
