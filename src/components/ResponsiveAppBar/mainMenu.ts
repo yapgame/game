@@ -13,4 +13,8 @@ export const mainMenu: Array<Record<string, string>> = [
     name: 'Team',
     url: Urls.MAIN.TEAM,
   },
+  {
+    name: 'Game',
+    url: Urls.MAIN.GAME,
+  },
 ];

@@ -11,7 +11,7 @@ import { rows } from './rows';
 function PlayerList() {
   return (
     <Container sx={{ m: 1, maxWidth: 250 }}>
-      <TableContainer component={Paper}>
+      <TableContainer sx={{ m: 1, maxWidth: 250 }} component={Paper}>
         <Table sx={{ maxWidth: 250 }} size="small" aria-label="a dense table">
           <TableBody>
             {rows.map((row) => (
