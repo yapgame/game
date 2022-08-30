@@ -4,14 +4,20 @@ import TextField from '@mui/material/TextField';
 import IconButton from '@mui/material/IconButton';
 import SearchIcon from '@mui/icons-material/Search';
 import auth from '../../utils/authApi';
+import { IUser } from '../../interfaces/IUser';
 
-function SearchBox() {
+function SearchBox({ setOpen, setResult }: {
+  setOpen: (o: boolean) => void, setResult: (u: IUser[]) => void}) {
   const [values, setValues] = React.useState<Record<string, string>>({});
+
   const handleFindUser = (evt: React.FormEvent) => {
     evt.preventDefault();
     auth
       .findUser(values)
       .then((res: Response) => {
+        setOpen(true);
+        const reUsers = res as unknown as IUser[];
+        setResult(reUsers);
         console.log(res);
       })
       .catch((err) => {

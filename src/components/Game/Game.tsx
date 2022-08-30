@@ -7,6 +7,10 @@ function Game() {
   console.log(cards);
   return (
     <>
+      <p>ID chat from start game</p>
+      <p>need tape</p>
+      <p>WebSoket</p>
+      <p>+ board</p>
       <Chat />
       <PaintBoard />
     </>

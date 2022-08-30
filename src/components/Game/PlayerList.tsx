@@ -19,7 +19,12 @@ function PlayerList() {
                 key={row.userName}
                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
               >
-                <TableCell align="left">{row.userName}</TableCell>
+                <TableCell
+                  align="left"
+                  onDoubleClick={() => console.log(row.userName)}
+                >
+                  {row.userName}
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
