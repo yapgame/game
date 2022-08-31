@@ -3,12 +3,20 @@ import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
+import auth from '../../utils/authApi';
 
 import { styleBox } from './styles';
 
 function PageStart() {
   const handleStartGame = () => {
-    console.log('start');
+    auth.createChat({ title: 'test' })
+      .then((res: Response) => {
+        // navigate(Urls.SIGN.IN);
+        console.log(res); // 1177
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   return (

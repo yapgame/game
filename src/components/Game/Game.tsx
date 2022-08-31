@@ -10,7 +10,6 @@ function Game() {
       <p>ID chat from start game</p>
       <p>need tape</p>
       <p>WebSoket</p>
-      <p>+ board</p>
       <Chat />
       <PaintBoard />
     </>
