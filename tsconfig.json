@@ -25,12 +25,12 @@
     "typeRoots": [
       "typings/**/*.d.ts",
       "node_modules/@types",
-      "src/*.d.ts",
+      "./src/*.d.ts",
       "./src/@types"]
   },
   "include": [
-    "src",
-    "src/*.d.ts",
+    "./src",
+    "./src/*.d.ts",
     "typings/**/*.d.ts",
     "./node_modules/@types",
   ],

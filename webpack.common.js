@@ -12,6 +12,8 @@ module.exports = {
   },
   resolve: {
     extensions: ['.tsx', '.ts', '.js'],
+    alias: {
+    },
   },
   module: {
     rules: [
@@ -43,12 +45,9 @@ module.exports = {
     }),
     new MiniCssExtractPlugin(),
   ],
-  devServer: {
-    static: {
-      directory: path.join(__dirname, 'dist'),
-    },
-    historyApiFallback: true,
-    compress: true,
-    port: 3000,
+  performance: {
+    hints: false,
+    maxEntrypointSize: 512000,
+    maxAssetSize: 512000,
   },
 };
