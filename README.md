@@ -34,11 +34,11 @@ Implemented features:
   - [ ] Api
     - [ ] Auth
     - [ ] WebSocket
-  - [ ] Store
+  - [X] Store
   - [ ] Canvas mech
 
 ### Demo
-
+[Heroku](https://croco-deadline.herokuapp.com)
 ... here is a picture and a link ...
 
 ### Installation
