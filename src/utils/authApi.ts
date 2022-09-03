@@ -1,19 +1,13 @@
 /* eslint-disable class-methods-use-this */
+import { IOption } from 'Interfaces/IOption';
 import { Methods } from './Methods';
-import { IOption } from '../interfaces/IOption';
+import { BaseApi } from './baseApi';
+import { Urls } from './constants';
 
-export class Auth {
-  private options: IOption;
-
+export class AuthApi extends BaseApi {
   constructor(options: IOption) {
+    super(options);
     this.options = options;
-  }
-
-  checkResponse(res: Response) {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject(`Ошибка ${res.status}`);
   }
 
   async signUp(data: Record<string, string>) {
@@ -84,18 +78,8 @@ export class Auth {
     return this.checkResponse(res);
   }
 
-  async createChat({ title }: Record<string, string>) {
-    const res = await fetch(`${this.options.baseUrl}/chats`, {
-      method: Methods.POST,
-      headers: this.options.headers,
-      credentials: 'include',
-      body: JSON.stringify({ title }),
-    });
-    return this.checkResponse(res);
-  }
-
-  async getChatUsers({ id }: Record<string, number>) {
-    const res = await fetch(`${this.options.baseUrl}/chats/${id}/users`, {
+  async getUserById(id: number) {
+    const res = await fetch(`${this.options.baseUrl}/user/${id}`, {
       method: Methods.GET,
       headers: this.options.headers,
       credentials: 'include',
@@ -112,60 +96,13 @@ export class Auth {
     });
     return this.checkResponse(res);
   }
-
-  async addUser({ users, chatId }: { users: Array<number>, chatId: number }) {
-    const res = await fetch(`${this.options.baseUrl}/chats/users`, {
-      method: Methods.PUT,
-      headers: this.options.headers,
-      credentials: 'include',
-      body: JSON.stringify({ users, chatId }),
-    });
-    return res;
-  }
-
-  async deleteUser({ users, chatId }: { users: Array<number>, chatId: number }) {
-    const res = await fetch(`${this.options.baseUrl}/chats/users`, {
-      method: Methods.DELETE,
-      headers: this.options.headers,
-      credentials: 'include',
-      body: JSON.stringify({ users, chatId }),
-    });
-    return this.checkResponse(res);
-  }
-
-  async addToLeaderboard({
-    data,
-    ratingFieldName,
-    teamName,
-  }: { data: Array<number>, ratingFieldName: string, teamName: string }) {
-    const res = await fetch(`${this.options.baseUrl}/leaderboard`, {
-      method: Methods.POST,
-      headers: this.options.headers,
-      credentials: 'include',
-      body: JSON.stringify({ data, ratingFieldName, teamName }),
-    });
-    return this.checkResponse(res);
-  }
-
-  async getLeaderboard({
-    ratingFieldName,
-    cursor,
-    limit,
-  }: { ratingFieldName: string, cursor: number, limit: number }) {
-    const res = await fetch(`${this.options.baseUrl}/leaderboard/all`, {
-      method: Methods.POST,
-      headers: this.options.headers,
-      credentials: 'include',
-      body: JSON.stringify({ ratingFieldName, cursor, limit }),
-    });
-    return this.checkResponse(res);
-  }
 }
 
-const auth = new Auth({
-  baseUrl: 'https://ya-praktikum.tech/api/v2',
+const auth = new AuthApi({
+  baseUrl: Urls.SHARE.API,
   headers: {
     Accept: 'application/json',
+    mode: 'cors',
     'Content-Type': 'application/json',
   },
 });

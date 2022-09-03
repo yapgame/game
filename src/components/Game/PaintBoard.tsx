@@ -1,10 +1,22 @@
 import React, { useRef, useEffect } from 'react';
-import Tools from './Tools';
+
+// interface IDraw {
+//   prevX: number,
+//   prevY: number,
+//   currX: number,
+//   currY: number,
+//   x: number,
+//   y: number,
+// }
 
 function PaintBoard() {
   const mountedRef = useRef(false);
   let canvas: HTMLCanvasElement;
   let ctx: CanvasRenderingContext2D;
+
+  let canvas1: HTMLCanvasElement;
+  let ctx1: CanvasRenderingContext2D;
+
   const x = 'black';
   const y = 2;
   let prevX = 0;
@@ -22,6 +34,16 @@ function PaintBoard() {
     ctx.lineWidth = y;
     ctx.stroke();
     ctx.closePath();
+  };
+
+  const handleDraw1 = () => {
+    ctx1.beginPath();
+    ctx1.moveTo(prevX, prevY);
+    ctx1.lineTo(currX, currY);
+    ctx1.strokeStyle = x;
+    ctx1.lineWidth = y;
+    ctx1.stroke();
+    ctx1.closePath();
   };
 
   const handleErase = () => {
@@ -57,6 +79,7 @@ function PaintBoard() {
         currX = e.clientX - canvas.offsetLeft;
         currY = e.clientY - canvas.offsetTop;
         handleDraw();
+        handleDraw1();
       }
     }
   };
@@ -70,6 +93,9 @@ function PaintBoard() {
     canvas.addEventListener('mouseup', (e: MouseEvent) => findxy('up', e), false);
     canvas.addEventListener('mouseout', (e: MouseEvent) => findxy('out', e), false);
     canvas.addEventListener('dblclick', () => handleErase(), false);
+
+    canvas1 = document.getElementById('myCanvas1')! as HTMLCanvasElement;
+    ctx1 = canvas1.getContext('2d')!;
   };
 
   useEffect(() => {
@@ -81,18 +107,40 @@ function PaintBoard() {
   }, []);
 
   return (
-    <div>
+    <div
+      style={{
+        margin: '10px',
+        border: '1px solid #d3d3d3',
+        borderRadius: '8px',
+      }}
+    >
       <canvas
         id="myCanvas"
-        width="300"
+        width="400"
         height="300"
         style={{
           border: '1px solid #d3d3d3',
+          borderRadius: '8px',
+          marginTop: '10px',
+          marginLeft: '10px',
         }}
       >
         Your browser does not support the canvas element.
       </canvas>
-      <Tools />
+
+      <canvas
+        id="myCanvas1"
+        width="400"
+        height="300"
+        style={{
+          border: '1px solid #d3d3d3',
+          borderRadius: '8px',
+          marginTop: '10px',
+          marginLeft: '10px',
+        }}
+      >
+        Your browser does not support the canvas element.
+      </canvas>
     </div>
   );
 }

@@ -21,7 +21,6 @@ function Inbox() {
         variant="outlined"
       />
       <IconButton color="primary" aria-label="upload picture" component="label">
-        {/* <input hidden accept="image/*" type="file" /> */}
         <SendIcon />
       </IconButton>
     </Box>

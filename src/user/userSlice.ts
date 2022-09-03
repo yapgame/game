@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import { IOUser } from '../interfaces/interfaces';
+import { IOUser } from 'Interfaces/interfaces';
 
 const initialState: IOUser = {
   user: {

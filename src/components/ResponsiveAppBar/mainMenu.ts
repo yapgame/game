@@ -1,4 +1,4 @@
-import { Urls } from '../../utils/constants';
+import { Urls } from 'Utils/constants';
 
 export const mainMenu: Array<Record<string, string>> = [
   {
@@ -16,5 +16,9 @@ export const mainMenu: Array<Record<string, string>> = [
   {
     name: 'Game',
     url: Urls.MAIN.GAME,
+  },
+  {
+    name: 'Forum',
+    url: Urls.FORUM.INDEX,
   },
 ];

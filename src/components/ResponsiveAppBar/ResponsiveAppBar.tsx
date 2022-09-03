@@ -13,10 +13,11 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
+import { Urls } from 'Utils/constants';
+import { IResponsiveAppBar, IUMenu, IOUser } from 'Interfaces/interfaces';
 import { mainMenu } from './mainMenu';
 import { userPrivateMenu } from './userPrivateMenu';
 import { selectData } from '../../user/userSlice';
-import { Urls } from '../../utils/constants';
 
 import {
   styleNavLink,
@@ -25,8 +26,6 @@ import {
   styleBox,
   styleTypographyH5,
 } from './styles';
-
-import { IResponsiveAppBar, IUMenu, IOUser } from '../../interfaces/interfaces';
 
 function ResponsiveAppBar({ loggedIn, handleSignOut }: IResponsiveAppBar) {
   const mountedRef = useRef(false);

@@ -3,8 +3,8 @@ import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import IconButton from '@mui/material/IconButton';
 import SearchIcon from '@mui/icons-material/Search';
-import auth from '../../utils/authApi';
-import { IUser } from '../../interfaces/IUser';
+import auth from 'Utils/authApi';
+import { IUser } from 'Interfaces/IUser';
 
 function SearchBox({ setOpen, setResult }: {
   setOpen: (o: boolean) => void, setResult: (u: IUser[]) => void}) {
@@ -12,6 +12,7 @@ function SearchBox({ setOpen, setResult }: {
 
   const handleFindUser = (evt: React.FormEvent) => {
     evt.preventDefault();
+
     auth
       .findUser(values)
       .then((res: Response) => {
@@ -36,7 +37,9 @@ function SearchBox({ setOpen, setResult }: {
       component="form"
       onSubmit={handleFindUser}
       sx={{
-        '& > :not(style)': { m: 1 },
+        '& > :not(style)': {
+          m: 1,
+        },
       }}
       noValidate
       autoComplete="off"

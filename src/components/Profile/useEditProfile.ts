@@ -1,10 +1,8 @@
 import React from 'react';
-
 import { useDispatch, useSelector } from 'react-redux';
+import { IUser } from 'Interfaces/interfaces';
+import auth from 'Utils/authApi';
 import { selectData, setUserData } from '../../user/userSlice';
-
-import { IUser } from '../../interfaces/interfaces';
-import auth from '../../utils/authApi';
 
 interface IOUser {
   user: IUser;

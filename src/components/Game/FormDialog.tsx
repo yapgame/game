@@ -10,54 +10,37 @@ import TableContainer from '@mui/material/TableContainer';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import Container from '@mui/material/Container';
-
-import auth from '../../utils/authApi';
-
+import { IFormDialogChatProps, IUser } from 'Interfaces/interfaces';
 import { styleFormDialogBox } from './styles';
-import { IUser } from '../../interfaces/IUser';
 
-export default function FormDialog({ open, setOpen, result }: {
-  open: boolean,
-  setOpen: (o: boolean) => void,
-  result: IUser[],
-}) {
+export default function FormDialog({
+  open,
+  result,
+  addUserToChat,
+  setOpen,
+}: IFormDialogChatProps) {
   const handleClose = () => {
     setOpen(false);
-  };
-
-  const addUserToChat = (userId: number) => {
-    const usersData: Array<number> = [];
-    usersData.push(userId);
-    auth.addUser({ users: usersData, chatId: 1177 })
-      .then((res: Response) => {
-        console.log(res); // 1177
-      })
-      .catch((err) => {
-        console.log(err);
-      });
   };
 
   return (
     <div>
       <Dialog open={open} onClose={handleClose}>
-        <Box
-          sx={styleFormDialogBox}
-          component="form"
-        >
+        <Box sx={styleFormDialogBox} component="form">
           <DialogTitle>Result</DialogTitle>
           <DialogActions>
             <Container sx={{ m: 1 }}>
               <TableContainer component={Paper}>
                 <Table size="small" aria-label="a dense table">
                   <TableBody>
-                    {result.map((row) => (
+                    {result.map((row: IUser) => (
                       <TableRow
                         key={row.login}
                         sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                       >
                         <TableCell
                           align="left"
-                          onDoubleClick={() => addUserToChat(row.id)}
+                          onDoubleClick={() => addUserToChat(row)}
                         >
                           {row.login}
                         </TableCell>

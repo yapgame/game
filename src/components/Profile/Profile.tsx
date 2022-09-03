@@ -8,13 +8,11 @@ import Card from '@mui/material/Card';
 import Container from '@mui/material/Container';
 import Tooltip from '@mui/material/Tooltip';
 import { NavLink } from 'react-router-dom';
+import { Urls } from 'Utils/constants';
+import { IOUser } from 'Interfaces/interfaces';
 import FormDialog from './FormDialog';
 import { selectData } from '../../user/userSlice';
 import { useAvatar } from './useAvatar';
-
-import { Urls } from '../../utils/constants';
-
-import { IOUser } from '../../interfaces/interfaces';
 
 import { styleBox, styleCard, styleNavLink } from './styles';
 

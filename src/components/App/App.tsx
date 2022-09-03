@@ -8,25 +8,23 @@ import {
 } from 'react-router-dom';
 
 import { useDispatch } from 'react-redux';
+import { Urls } from 'Utils/constants';
+import auth from 'Utils/authApi';
+import Leaderboard from 'Components/Leaderboard/Leaderboard';
+import PageStart from 'Components/PageStart/PageStart';
+import ResponsiveAppBar from 'Components/ResponsiveAppBar/ResponsiveAppBar';
+import Footer from 'Components/Footer/Footer';
+import SignUp from 'Components/PageSignUp/SignUp';
+import SignIn from 'Components/PageSignIn/SignIn';
+import Profile from 'Components/Profile/Profile';
+import PageForum from 'Components/PageForum/PageForum';
+import ProfileEdit from 'Components/Profile/ProfileEdit';
+import Team from 'Components/Team/Team';
+import Game from 'Components/Game/Game';
+import NotFound from 'Components/Errors/NotFound';
+import InternalServerError from 'Components/Errors/InternalServerError';
+import ProtectedRoute from 'Components/ProtectedRoute/ProtectedRoute';
 import { setUserData } from '../../user/userSlice';
-
-import Leaderboard from '../Leaderboard/Leaderboard';
-import PageStart from '../PageStart/PageStart';
-import ResponsiveAppBar from '../ResponsiveAppBar/ResponsiveAppBar';
-import Footer from '../Footer/Footer';
-import SignUp from '../PageSignUp/SignUp';
-import SignIn from '../PageSignIn/SignIn';
-import Profile from '../Profile/Profile';
-import ProfileEdit from '../Profile/ProfileEdit';
-import Team from '../Team/Team';
-import Game from '../Game/Game';
-import NotFound from '../Errors/NotFound';
-import InternalServerError from '../Errors/InternalServerError';
-import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
-
-import { Urls } from '../../utils/constants';
-
-import auth from '../../utils/authApi';
 
 function App() {
   const navigate = useNavigate();
@@ -90,6 +88,7 @@ function App() {
       .then((user) => {
         dispatch(setUserData(user));
         setLoggedIn(true);
+
         if (location.pathname === Urls.SIGN.IN
           || location.pathname === Urls.SIGN.UP) {
           navigate(Urls.PROFILE.INDEX);
@@ -152,6 +151,14 @@ function App() {
           element={(
             <ProtectedRoute loggedIn={loggedIn}>
               <PageStart />
+            </ProtectedRoute>
+          )}
+        />
+        <Route
+          path={Urls.FORUM.INDEX}
+          element={(
+            <ProtectedRoute loggedIn={loggedIn}>
+              <PageForum />
             </ProtectedRoute>
           )}
         />

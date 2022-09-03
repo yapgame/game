@@ -1,6 +1,5 @@
-import { Urls } from '../../utils/constants';
-
-import { IUMenu } from '../../interfaces/interfaces';
+import { Urls } from 'Utils/constants';
+import { IUMenu } from 'Interfaces/interfaces';
 
 export const userPrivateMenu: Array<IUMenu> = [
   {

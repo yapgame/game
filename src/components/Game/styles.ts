@@ -43,3 +43,22 @@ export const styleFormDialogButton = {
   m: 2,
   width: '100%',
 };
+
+export const styleChatBox = {
+  display: 'flex',
+  flexWrap: 'wrap',
+  '& > :not(style)': {
+    m: 1,
+    width: 300,
+    height: 300,
+  },
+};
+export const styleChatPaper = {
+  display: 'flex',
+  flexWrap: 'wrap',
+  '& > :not(style)': {
+    m: 0,
+    margin: 0,
+    padding: 0,
+  },
+};

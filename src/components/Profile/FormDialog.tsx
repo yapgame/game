@@ -7,10 +7,9 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogTitle from '@mui/material/DialogTitle';
 import Avatar from '@mui/material/Avatar';
-import { Urls } from '../../utils/constants';
+import { Urls } from 'Utils/constants';
+import { IFormDialogProps, IOUser } from 'Interfaces/interfaces';
 import { selectData } from '../../user/userSlice';
-
-import { IFormDialogProps, IOUser } from '../../interfaces/interfaces';
 
 import { styleAvatar, styleFormDialogBox, styleFormDialogButton } from './styles';
 

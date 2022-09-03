@@ -11,6 +11,10 @@ export const Urls = {
     UP: '/signup',
     OUT: '/logout',
   },
+  FORUM: {
+    INDEX: '/forum',
+    TOPIC: '/forum/topic/:id',
+  },
   PROFILE: {
     INDEX: '/profile',
     EDIT: '/profile/edit',
@@ -21,5 +25,6 @@ export const Urls = {
   },
   SHARE: {
     FILES: 'https://ya-praktikum.tech/api/v2/resources/',
+    API: 'https://ya-praktikum.tech/api/v2',
   },
 };

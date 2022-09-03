@@ -3,7 +3,7 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { NavLink } from 'react-router-dom';
 import Container from '@mui/material/Container';
-import { Urls } from '../../utils/constants';
+import { Urls } from 'Utils/constants';
 import { styleBox, styleNavLink } from './styles';
 
 function Team() {
