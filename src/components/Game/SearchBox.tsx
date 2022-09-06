@@ -54,10 +54,10 @@ function SearchBox({ setOpen, setResult }: {
         variant="outlined"
       />
       <IconButton
-        type="submit"
         color="primary"
         aria-label="upload picture"
         component="button"
+        type="submit"
       >
         <SearchIcon />
       </IconButton>
