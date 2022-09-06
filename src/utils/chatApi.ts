@@ -39,6 +39,15 @@ export class ChatApi extends BaseApi {
     return this.checkResponse(res);
   }
 
+  async getChatToken({ id }: Record<string, number>) {
+    const res = await fetch(`${this.options.baseUrl}/chats/token/${id}`, {
+      method: Methods.POST,
+      headers: this.options.headers,
+      credentials: 'include',
+    });
+    return this.checkResponse(res);
+  }
+
   async addUser({ users, chatId }: { users: Array<number>, chatId: number }) {
     const res = await fetch(`${this.options.baseUrl}/chats/users`, {
       method: Methods.PUT,

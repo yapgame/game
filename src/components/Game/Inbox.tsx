@@ -4,7 +4,7 @@ import TextField from '@mui/material/TextField';
 import IconButton from '@mui/material/IconButton';
 import SendIcon from '@mui/icons-material/Send';
 
-function Inbox() {
+function Inbox({ sendChatMessage }: { sendChatMessage: (s: string) => void }) {
   return (
     <Box
       component="form"
@@ -20,7 +20,12 @@ function Inbox() {
         label="Outlined"
         variant="outlined"
       />
-      <IconButton color="primary" aria-label="upload picture" component="label">
+      <IconButton
+        onClick={() => sendChatMessage('test')}
+        color="primary"
+        aria-label="upload picture"
+        component="label"
+      >
         <SendIcon />
       </IconButton>
     </Box>

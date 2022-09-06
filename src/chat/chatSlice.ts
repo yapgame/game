@@ -17,7 +17,6 @@ const chatSlice = createSlice({
     setChatData: (state, action) => {
       // eslint-disable-next-line no-param-reassign
       state.chat = action.payload;
-      // console.log(action.payload);
     },
   },
 });

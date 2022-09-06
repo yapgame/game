@@ -34,6 +34,15 @@ function PaintBoard() {
     ctx.lineWidth = y;
     ctx.stroke();
     ctx.closePath();
+    console.log({
+      type: 'draw',
+      prevX,
+      prevY,
+      currX,
+      currY,
+      x,
+      y,
+    });
   };
 
   const handleDraw1 = () => {

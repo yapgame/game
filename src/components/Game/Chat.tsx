@@ -1,82 +1,78 @@
-import React, { useRef, useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
-import { IUser } from 'Interfaces/IUser';
+import React from 'react';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
-import chats from 'Utils/chatApi';
+import { IOUser, IUser } from 'Interfaces/interfaces';
+import WebSocketService from 'Utils/WebSocket';
+import chat from 'Utils/chatApi';
+import { useSelector } from 'react-redux';
+import { selectData } from '../../user/userSlice';
+
 import PlayerList from './PlayerList';
 import Inbox from './Inbox';
 import Message from './Message';
 import SearchBox from './SearchBox';
 import FormDialog from './FormDialog';
 import { styleChatBox, styleChatPaper } from './styles';
-import { selectData } from '../../chat/chatSlice';
 
-function Chat() {
-  const mountedRef = useRef(false);
-  const chat = useSelector(selectData) as unknown as { chat: number };
-  const [open, setOpen] = useState(false);
-  const [result, setResult] = React.useState<[]|IUser[]>([]);
-  const [users, setUsers] = useState<Array<IUser>>([]);
+interface IChatProps {
+  open: boolean,
+  result: []|IUser[],
+  setOpen: (o: boolean) => void,
+  setResult: (r: []|IUser[]) => void,
+  addUserToChat: (user: IUser) => void,
+  removeUserFromChat: (userId: number) => void,
+  users: Array<IUser>,
+}
 
-  const getChatUsers = () => {
-    // let chatId = 0;
-
-    console.log(chat?.chat);
-
-    // if (chat?.chat) {
-    //   chatId = chat.chat;
-    // } else {
-    //   const stringId = localStorage.getItem('game');
-    //   chatId = Number(stringId);
-    // }
-
-    // chats.getChatUsers({ id: chatId })
-    //   .then((res: Response) => {
-    //     const list = res as unknown as IUser[];
-    //     setUsers(list);
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //   });
+function Chat({
+  open,
+  result,
+  setOpen,
+  setResult,
+  addUserToChat,
+  removeUserFromChat,
+  users,
+}: IChatProps) {
+  // const connectToChat = (props: { userId: number, chatId: number, chatToken: string }) => {
+  //   const { userId, chatId, chatToken } = props;
+  //   // eslint-disable-next-line no-new
+  //   (new WebSocketService(userId, chatId, chatToken));
+  // };
+  //
+  const getChatToken = async (chatId: number) => {
+    // eslint-disable-next-line no-shadow
+    const result: Record<string, string> = await chat.getChatToken({ id: chatId });
+    const { token } = await result;
+    return token;
   };
-
-  const addUserToChat = (user: IUser) => {
-    const usersData: Array<number> = [user.id];
-    chats.addUser({ users: usersData, chatId: chat.chat })
-      .then((res: Response) => {
-        console.log(res);
-        const arr = [...users, user];
-        setUsers(arr);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
-  const removeUserFromChat = (userId: number) => {
-    const usersData: Array<number> = [userId];
-    chats.deleteUser({ users: usersData, chatId: chat.chat })
-      .then((res: Response) => {
-        console.log(res);
-        const arr = users.filter((u: IUser) => u.id !== userId);
-        setUsers(arr);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
-  useEffect(() => {
-    mountedRef.current = true;
-    if (chat.chat) {
-      getChatUsers();
+  const user = useSelector(selectData) as unknown as IOUser;
+  const stringId = localStorage.getItem('game');
+  if (stringId) {
+    getChatToken(Number(stringId)).then((r) => {
+      console.log(r);
+      // eslint-disable-next-line no-use-before-define
+      connectToChat({ chatToken: r, userId: Number(user.user.id), chatId: Number(stringId) });
+    });
+  }
+  const sendChatMessage = (message: string) => {
+    if (message === '') {
+      return;
     }
-    return () => {
-      mountedRef.current = false;
-    };
-  }, [chat.chat, users.length]);
-
+    (new WebSocketService()).send({
+      content: message,
+      type: 'message',
+    });
+    // (new WebSocketService()).send({
+    //   content: message,
+    //   type: 'open',
+    // });
+  };
+  // sendChatMessage('test');
+  const connectToChat = (props: { userId: number, chatId: number, chatToken: string }) => {
+    const { userId, chatId, chatToken } = props;
+    // eslint-disable-next-line no-new
+    (new WebSocketService(userId, chatId, chatToken));
+  };
   return (
     <Box sx={styleChatBox}>
       <Paper elevation={1} sx={styleChatPaper}>
@@ -88,7 +84,7 @@ function Chat() {
       </Paper>
       <Paper>
         <Message />
-        <Inbox />
+        <Inbox sendChatMessage={sendChatMessage} />
       </Paper>
       <Paper elevation={3} />
       <FormDialog
