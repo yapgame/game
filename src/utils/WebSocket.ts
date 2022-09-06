@@ -1,6 +1,7 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable no-shadow */
 /* eslint-disable class-methods-use-this */
+import { IDraw } from 'Interfaces/interfaces';
 import { store } from '../store/store';
 import { setMessagesData } from '../chat/messageSlice';
 
@@ -12,7 +13,7 @@ const Urls = {
 };
 
 interface IMessage {
-  content: string | number,
+  content: Record<string, string>|IDraw|null|string,
   type: string,
 }
 
@@ -46,13 +47,13 @@ export default class WebSocketService {
 
   public send(payload: IMessage): void {
     console.log('Message sent');
+
     this._socket?.send(JSON.stringify(payload));
   }
 
   private onOpen(): void {
     console.log('Connection established');
 
-    console.log();
     this.send({
       content: '0',
       type: 'get old',
@@ -71,9 +72,7 @@ export default class WebSocketService {
       messages.reverse();
     }
 
-    console.log('=>', messages);
     store.dispatch(setMessagesData(messages));
-    // store.dispatchAction(ActionTypes.GET_CHAT_MESSAGES, messages);
   }
 
   onError(event: Record<string, object>): void {

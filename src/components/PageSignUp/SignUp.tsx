@@ -29,6 +29,7 @@ function SignUp({ handleSignUp }: ISignUpProps) {
 
   const handleSubmit = (evt: React.FormEvent) => {
     evt.preventDefault();
+
     handleSignUp(values);
   };
 

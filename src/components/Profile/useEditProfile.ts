@@ -10,7 +10,6 @@ interface IOUser {
 
 function useEditProfile() {
   const dispatch = useDispatch();
-
   const user = useSelector(selectData) as unknown as IOUser;
   const [uData, setUData] = React.useState(user.user);
 

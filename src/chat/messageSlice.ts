@@ -1,8 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-interface IMessage {
+export interface IMessage {
   chat_id: number,
-  content: string,
+  content: {type: string, content: string},
   file: null,
   id: number,
   is_read: boolean,
@@ -13,7 +13,7 @@ interface IMessage {
 
 export interface IMessages {
   mchat: {
-    messages: Array<IMessage>
+    messages: Array<IMessage>|IMessage
   }
 }
 
@@ -30,7 +30,6 @@ const messageSlice = createSlice({
     setMessagesData: (state, action) => {
       // eslint-disable-next-line no-param-reassign
       state.mchat = action.payload;
-      console.log('+++', action.payload);
     },
   },
 });

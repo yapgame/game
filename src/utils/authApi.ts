@@ -16,6 +16,7 @@ export class AuthApi extends BaseApi {
       headers: this.options.headers,
       body: JSON.stringify(data),
     });
+
     return res;
   }
 
@@ -26,6 +27,7 @@ export class AuthApi extends BaseApi {
       credentials: 'include',
       body: JSON.stringify(data),
     });
+
     return res;
   }
 
@@ -35,6 +37,7 @@ export class AuthApi extends BaseApi {
       headers: this.options.headers,
       credentials: 'include',
     });
+
     return res;
   }
 
@@ -45,6 +48,7 @@ export class AuthApi extends BaseApi {
       credentials: 'include',
       body: JSON.stringify(data),
     });
+
     return this.checkResponse(res);
   }
 
@@ -56,6 +60,7 @@ export class AuthApi extends BaseApi {
       credentials: 'include',
       body: data,
     });
+
     return this.checkResponse(res);
   }
 
@@ -66,6 +71,7 @@ export class AuthApi extends BaseApi {
       credentials: 'include',
       body: JSON.stringify(data),
     });
+
     return this.checkResponse(res);
   }
 
@@ -75,6 +81,7 @@ export class AuthApi extends BaseApi {
       headers: this.options.headers,
       credentials: 'include',
     });
+
     return this.checkResponse(res);
   }
 
@@ -84,6 +91,7 @@ export class AuthApi extends BaseApi {
       headers: this.options.headers,
       credentials: 'include',
     });
+
     return this.checkResponse(res);
   }
 
@@ -94,6 +102,7 @@ export class AuthApi extends BaseApi {
       credentials: 'include',
       body: JSON.stringify({ login }),
     });
+
     return this.checkResponse(res);
   }
 }

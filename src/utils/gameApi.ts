@@ -10,31 +10,27 @@ export class GameApi extends BaseApi {
     this.options = options;
   }
 
-  async addToLeaderboard({
-    data,
-    ratingFieldName,
-    teamName,
-  }: { data: Record<string, string|number>, ratingFieldName: string, teamName: string }) {
+  async addToLeaderboard({ data, ratingFieldName, teamName }:
+    { data: Record<string, string|number>, ratingFieldName: string, teamName: string }) {
     const res = await fetch(`${this.options.baseUrl}/leaderboard`, {
       method: Methods.POST,
       headers: this.options.headers,
       credentials: 'include',
       body: JSON.stringify({ data, ratingFieldName, teamName }),
     });
+
     return res;
   }
 
-  async getLeaderboard({
-    ratingFieldName,
-    cursor,
-    limit,
-  }: { ratingFieldName: string, cursor: number, limit: number }) {
+  async getLeaderboard({ ratingFieldName, cursor, limit }:
+    { ratingFieldName: string, cursor: number, limit: number }) {
     const res = await fetch(`${this.options.baseUrl}/leaderboard/all`, {
       method: Methods.POST,
       headers: this.options.headers,
       credentials: 'include',
       body: JSON.stringify({ ratingFieldName, cursor, limit }),
     });
+
     return this.checkResponse(res);
   }
 
@@ -49,6 +45,7 @@ export class GameApi extends BaseApi {
       credentials: 'include',
       body: JSON.stringify({ ratingFieldName, cursor, limit }),
     });
+
     return this.checkResponse(res);
   }
 }

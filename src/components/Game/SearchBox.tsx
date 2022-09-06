@@ -29,6 +29,7 @@ function SearchBox({ setOpen, setResult }: {
   const handleChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
     const { target } = evt;
     const { name, value } = target;
+
     setValues({ ...values, [name]: value });
   };
 

@@ -19,14 +19,12 @@ import { styleBox, styleCard, styleNavLink } from './styles';
 function Profile() {
   const score = 77;
   const user = useSelector(selectData) as unknown as IOUser;
-
   const {
     first_name,
     second_name,
     login,
     avatar,
   } = user.user;
-
   const [newAvatar, setAvatar] = useAvatar(avatar);
 
   const handleEditAvatar = (data: File) => {

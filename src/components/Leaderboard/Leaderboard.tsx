@@ -21,13 +21,15 @@ const styleAvatar = {
 function Leaderboard() {
   const mountedRef = useRef(false);
   const [list, setList] = useState<any>();
+
   useEffect(() => {
     mountedRef.current = true;
-    auth.getLeaderboardByTeam('Sydney', {
-      ratingFieldName: 'coins',
-      cursor: 0,
-      limit: 50,
-    })
+    auth
+      .getLeaderboardByTeam('Sydney', {
+        ratingFieldName: 'coins',
+        cursor: 0,
+        limit: 50,
+      })
       .then((res: Response) => {
         setList(res);
         console.log(res);

@@ -6,10 +6,9 @@ import { IProtectedRouteProps } from 'Interfaces/interfaces';
 
 function ProtectedRoute({ loggedIn, children }: IProtectedRouteProps) {
   if (!loggedIn) {
-    return (
-      <Navigate to={Urls.SIGN.IN} replace />
-    );
+    return (<Navigate to={Urls.SIGN.IN} replace />);
   }
+
   return children;
 }
 

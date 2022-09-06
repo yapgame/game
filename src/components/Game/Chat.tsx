@@ -1,78 +1,83 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
-import { IOUser, IUser } from 'Interfaces/interfaces';
+import {
+  IOUser,
+  IChatProps,
+  IConnectProps,
+  IDraw,
+} from 'Interfaces/interfaces';
 import WebSocketService from 'Utils/WebSocket';
 import chat from 'Utils/chatApi';
 import { useSelector } from 'react-redux';
 import { selectData } from '../../user/userSlice';
-
+import { IMessages, selectData as selectMessageData } from '../../chat/messageSlice';
 import PlayerList from './PlayerList';
 import Inbox from './Inbox';
-import Message from './Message';
+import Message from './Messages';
 import SearchBox from './SearchBox';
 import FormDialog from './FormDialog';
 import { styleChatBox, styleChatPaper } from './styles';
 
-interface IChatProps {
-  open: boolean,
-  result: []|IUser[],
-  setOpen: (o: boolean) => void,
-  setResult: (r: []|IUser[]) => void,
-  addUserToChat: (user: IUser) => void,
-  removeUserFromChat: (userId: number) => void,
-  users: Array<IUser>,
-}
+let conn: WebSocketService;
 
 function Chat({
   open,
   result,
+  users,
+  points,
   setOpen,
   setResult,
   addUserToChat,
   removeUserFromChat,
-  users,
 }: IChatProps) {
-  // const connectToChat = (props: { userId: number, chatId: number, chatToken: string }) => {
-  //   const { userId, chatId, chatToken } = props;
-  //   // eslint-disable-next-line no-new
-  //   (new WebSocketService(userId, chatId, chatToken));
-  // };
-  //
-  const getChatToken = async (chatId: number) => {
-    // eslint-disable-next-line no-shadow
-    const result: Record<string, string> = await chat.getChatToken({ id: chatId });
-    const { token } = await result;
+  const mountedRef = useRef(false);
+  const user = useSelector(selectData) as unknown as IOUser;
+  const messages = useSelector(selectMessageData) as unknown as IMessages;
+
+  const getChatToken = async (id: number) => {
+    const { token }: Record<string, string> = await chat.getChatToken({ id });
     return token;
   };
-  const user = useSelector(selectData) as unknown as IOUser;
-  const stringId = localStorage.getItem('game');
-  if (stringId) {
-    getChatToken(Number(stringId)).then((r) => {
-      console.log(r);
-      // eslint-disable-next-line no-use-before-define
-      connectToChat({ chatToken: r, userId: Number(user.user.id), chatId: Number(stringId) });
-    });
-  }
-  const sendChatMessage = (message: string) => {
-    if (message === '') {
+
+  const connectToChat = (props: IConnectProps) => {
+    const { userId, chatId, chatToken } = props;
+    conn = new WebSocketService(userId, chatId, chatToken);
+  };
+
+  const sendChatMessage = (message: Record<string, string>|IDraw|null|string) => {
+    if (message === null) {
       return;
     }
-    (new WebSocketService()).send({
-      content: message,
-      type: 'message',
-    });
-    // (new WebSocketService()).send({
-    //   content: message,
-    //   type: 'open',
-    // });
+
+    if (conn) {
+      conn.send({
+        content: message,
+        type: 'message',
+      });
+    }
   };
-  // sendChatMessage('test');
-  const connectToChat = (props: { userId: number, chatId: number, chatToken: string }) => {
-    const { userId, chatId, chatToken } = props;
-    // eslint-disable-next-line no-new
-    (new WebSocketService(userId, chatId, chatToken));
-  };
+
+  useEffect(() => {
+    mountedRef.current = true;
+    const stringId: string|null = localStorage.getItem('game');
+
+    if (points) {
+      sendChatMessage(points);
+    }
+
+    if (stringId) {
+      getChatToken(Number(stringId)).then((chatToken) => {
+        const data = { chatToken, userId: Number(user.user.id), chatId: Number(stringId) };
+        connectToChat(data);
+      });
+    }
+
+    return () => {
+      mountedRef.current = false;
+    };
+  }, [points?.currY]);
+
   return (
     <Box sx={styleChatBox}>
       <Paper elevation={1} sx={styleChatPaper}>
@@ -83,7 +88,7 @@ function Chat({
         />
       </Paper>
       <Paper>
-        <Message />
+        <Message mchat={messages.mchat} />
         <Inbox sendChatMessage={sendChatMessage} />
       </Paper>
       <Paper elevation={3} />

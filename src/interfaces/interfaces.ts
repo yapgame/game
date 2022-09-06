@@ -12,3 +12,6 @@ export { IFormDialogProps } from './IFormDialogProps';
 export { IOUser } from './IOUser';
 export { IFormDialogChatProps } from './IFormDialogChatProps';
 export { IPlayerListProps } from './IPlayerListProps';
+export { IChatProps } from './IChatProps';
+export { IConnectProps } from './IConnectProps';
+export { IDraw } from './IDraw';

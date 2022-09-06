@@ -34,6 +34,7 @@ export default function FormDialog(props: IFormDialogProps) {
 
   const handleSubmit = (evt: React.FormEvent) => {
     evt.preventDefault();
+
     handleClose();
     onHandleSubmit(file!);
   };

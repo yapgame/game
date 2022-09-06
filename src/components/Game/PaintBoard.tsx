@@ -1,16 +1,14 @@
 import React, { useRef, useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import { IDraw } from 'Interfaces/interfaces';
+import { IMessages, selectData as selectMessageData } from '../../chat/messageSlice';
+import { styleCanvas, styleBoxCanvas } from './styles';
 
-// interface IDraw {
-//   prevX: number,
-//   prevY: number,
-//   currX: number,
-//   currY: number,
-//   x: number,
-//   y: number,
-// }
-
-function PaintBoard() {
+function PaintBoard({ setPoints }: {setPoints: (p: IDraw) => void}) {
   const mountedRef = useRef(false);
+  const messages = useSelector(selectMessageData) as unknown as IMessages;
+  const { mchat } = messages as any;
+
   let canvas: HTMLCanvasElement;
   let ctx: CanvasRenderingContext2D;
 
@@ -34,7 +32,7 @@ function PaintBoard() {
     ctx.lineWidth = y;
     ctx.stroke();
     ctx.closePath();
-    console.log({
+    setPoints({
       type: 'draw',
       prevX,
       prevY,
@@ -43,16 +41,6 @@ function PaintBoard() {
       x,
       y,
     });
-  };
-
-  const handleDraw1 = () => {
-    ctx1.beginPath();
-    ctx1.moveTo(prevX, prevY);
-    ctx1.lineTo(currX, currY);
-    ctx1.strokeStyle = x;
-    ctx1.lineWidth = y;
-    ctx1.stroke();
-    ctx1.closePath();
   };
 
   const handleErase = () => {
@@ -87,8 +75,8 @@ function PaintBoard() {
         prevY = currY;
         currX = e.clientX - canvas.offsetLeft;
         currY = e.clientY - canvas.offsetTop;
+
         handleDraw();
-        handleDraw1();
       }
     }
   };
@@ -110,43 +98,39 @@ function PaintBoard() {
   useEffect(() => {
     mountedRef.current = true;
     init();
+    if (!Array.isArray(mchat) && mchat?.id) {
+      if (mchat?.content?.type === 'draw') {
+        const props = mchat.content;
+
+        ctx1.beginPath();
+        ctx1.moveTo(props.prevX, props.prevY);
+        ctx1.lineTo(props.currX, props.currY);
+        ctx1.strokeStyle = props.x;
+        ctx1.lineWidth = props.y;
+        ctx1.stroke();
+        ctx1.closePath();
+      }
+    }
     return () => {
       mountedRef.current = false;
     };
-  }, []);
+  }, [mchat?.id]);
 
   return (
-    <div
-      style={{
-        margin: '10px',
-        border: '1px solid #d3d3d3',
-        borderRadius: '8px',
-      }}
-    >
+    <div style={styleBoxCanvas}>
       <canvas
         id="myCanvas"
         width="400"
         height="300"
-        style={{
-          border: '1px solid #d3d3d3',
-          borderRadius: '8px',
-          marginTop: '10px',
-          marginLeft: '10px',
-        }}
+        style={styleCanvas}
       >
         Your browser does not support the canvas element.
       </canvas>
-
       <canvas
         id="myCanvas1"
         width="400"
         height="300"
-        style={{
-          border: '1px solid #d3d3d3',
-          borderRadius: '8px',
-          marginTop: '10px',
-          marginLeft: '10px',
-        }}
+        style={styleCanvas}
       >
         Your browser does not support the canvas element.
       </canvas>

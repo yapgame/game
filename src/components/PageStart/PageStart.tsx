@@ -15,7 +15,8 @@ function PageStart() {
   const dispatch = useDispatch();
 
   const handleStartGame = () => {
-    chat.createChat({ title: 'test' })
+    chat
+      .createChat({ title: 'test' })
       .then((res: Response) => {
         const { id } = res as unknown as { id: number };
         console.log(id);
