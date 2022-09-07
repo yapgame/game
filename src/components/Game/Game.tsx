@@ -1,13 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useSelector } from 'react-redux';
-import { IUser } from 'interfaces/IUser';
-import chats from 'Utils/chatApi';
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { IUser } from 'Interfaces/IUser';
+import chats from 'Utils/chatApi';
 import { Urls } from 'Utils/constants';
 import { IDraw } from 'Interfaces/interfaces';
 import PaintBoard from './PaintBoard';
-import Chat from './Chat';
-import { selectData } from '../../chat/chatSlice';
+import Chat from '../Chat/Chat';
+import { selectData } from '../../slices/chat/chatSlice';
 
 function Game() {
   const navigate = useNavigate();
@@ -16,7 +16,7 @@ function Game() {
   const [open, setOpen] = useState(false);
   const [result, setResult] = React.useState<[]|IUser[]>([]);
   const [users, setUsers] = useState<Array<IUser>>([]);
-  const [points, setPoints] = React.useState<IDraw|null>(null);
+  const [points, setPoints] = React.useState<Array<{ content: IDraw }>|null>(null);
 
   const getChatUsers = () => {
     let chatId = 0;
@@ -83,7 +83,7 @@ function Game() {
     return () => {
       mountedRef.current = false;
     };
-  }, [chat.chat, users.length, points?.prevX]);
+  }, [chat.chat, users.length]);
   return (
     <>
       <PaintBoard setPoints={setPoints} />

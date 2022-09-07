@@ -24,7 +24,7 @@ import Game from 'Components/Game/Game';
 import NotFound from 'Components/Errors/NotFound';
 import InternalServerError from 'Components/Errors/InternalServerError';
 import ProtectedRoute from 'Components/ProtectedRoute/ProtectedRoute';
-import { setUserData } from '../../user/userSlice';
+import { setUserData } from '../../slices/user/userSlice';
 
 function App() {
   const navigate = useNavigate();

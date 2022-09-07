@@ -1,8 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-
-interface IChat {
-  chat: Record<string, number>
-}
+import { IChat } from 'Interfaces/interfaces';
 
 const initialState: IChat = {
   chat: {

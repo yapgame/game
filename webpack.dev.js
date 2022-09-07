@@ -11,12 +11,6 @@ module.exports = merge(common, {
       directory: path.join(__dirname, 'dist'),
     },
     open: 'Firefox',
-    // {
-    //   app: {
-    //     name: 'firefox',
-    //     arguments: ['--incognito', '--new-window'],
-    //   },
-    // },
     historyApiFallback: true,
     compress: true,
     port: 3000,

@@ -5,7 +5,7 @@ import IconButton from '@mui/material/IconButton';
 import SendIcon from '@mui/icons-material/Send';
 
 function Inbox({ sendChatMessage }:
-  { sendChatMessage: (s: Record<string, string>) => void }) {
+  { sendChatMessage: (message: Record<string, string>) => void }) {
   const [values, setValues] = React.useState({ message: '' });
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -19,8 +19,11 @@ function Inbox({ sendChatMessage }:
     evt.preventDefault();
 
     const { message }: Record<string, string> = values;
-    sendChatMessage({ type: 'message', content: message });
-    setValues({ ...values, message: '' });
+
+    if (message !== '') {
+      sendChatMessage({ type: 'message', content: message });
+      setValues({ ...values, message: '' });
+    }
   };
 
   return (
@@ -36,7 +39,7 @@ function Inbox({ sendChatMessage }:
         name="message"
         size="small"
         id="outlined-basic"
-        label="Outlined"
+        label="Your text..."
         variant="outlined"
         value={values.message || ''}
       />

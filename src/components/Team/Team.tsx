@@ -12,9 +12,8 @@ function Team() {
       <Box gridColumn="span 1" sx={styleBox}>
         <Typography variant="h2" gutterBottom component="div">Sydney team</Typography>
         <Typography variant="body1" gutterBottom>GitHub - game link</Typography>
-        <Typography variant="body1" gutterBottom># 1 ...</Typography>
-        <Typography variant="body1" gutterBottom># 2 ...</Typography>
-        <Typography variant="body1" gutterBottom># 3 ...</Typography>
+        <Typography variant="body1" gutterBottom># 1 bmazur</Typography>
+        <Typography variant="body1" gutterBottom> ... </Typography>
         <Typography variant="body1" gutterBottom>by Yandex Practicum</Typography>
         <NavLink
           to={Urls.MAIN.INDEX}

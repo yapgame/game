@@ -3,7 +3,7 @@
 /* eslint-disable class-methods-use-this */
 import { IDraw } from 'Interfaces/interfaces';
 import { store } from '../store/store';
-import { setMessagesData } from '../chat/messageSlice';
+import { setMessagesData } from '../slices/chat/messageSlice';
 
 const Urls = {
   BASE: {
@@ -13,7 +13,7 @@ const Urls = {
 };
 
 interface IMessage {
-  content: Record<string, string>|IDraw|null|string,
+  content: string | Record<string, string | IDraw>[] | null,
   type: string,
 }
 
@@ -66,7 +66,6 @@ export default class WebSocketService {
     if (messages.type === 'user connected') {
       return;
     }
-
     if (Array.isArray(messages)) {
       messages = messages.map((item: Record<string, unknown>) => item);
       messages.reverse();
@@ -88,5 +87,9 @@ export default class WebSocketService {
 
     console.log(`Event code: ${event.code}`);
     console.log(`Event reason: ${event.reason}`);
+
+    if (event.code.toString() === '1006') {
+      this.onOpen();
+    }
   }
 }

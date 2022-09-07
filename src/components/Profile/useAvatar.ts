@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import auth from 'Utils/authApi';
 import { IUser } from 'Interfaces/IUser';
-import { setUserData } from '../../user/userSlice';
+import { setUserData } from '../../slices/user/userSlice';
 
 export function useAvatar(initAvatar: string|null) {
   const dispatch = useDispatch();

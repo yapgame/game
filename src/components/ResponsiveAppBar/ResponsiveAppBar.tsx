@@ -17,7 +17,7 @@ import { Urls } from 'Utils/constants';
 import { IResponsiveAppBar, IUMenu, IOUser } from 'Interfaces/interfaces';
 import { mainMenu } from './mainMenu';
 import { userPrivateMenu } from './userPrivateMenu';
-import { selectData } from '../../user/userSlice';
+import { selectData } from '../../slices/user/userSlice';
 
 import {
   styleNavLink,

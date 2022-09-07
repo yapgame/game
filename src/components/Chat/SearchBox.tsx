@@ -5,9 +5,10 @@ import IconButton from '@mui/material/IconButton';
 import SearchIcon from '@mui/icons-material/Search';
 import auth from 'Utils/authApi';
 import { IUser } from 'Interfaces/IUser';
+import Typography from '@mui/material/Typography';
 
-function SearchBox({ setOpen, setResult }: {
-  setOpen: (o: boolean) => void, setResult: (u: IUser[]) => void}) {
+function SearchBox({ setOpen, setResult, stringId }: {
+  setOpen: (o: boolean) => void, setResult: (u: IUser[]) => void, stringId: string|null}) {
   const [values, setValues] = React.useState<Record<string, string>>({});
 
   const handleFindUser = (evt: React.FormEvent) => {
@@ -19,7 +20,6 @@ function SearchBox({ setOpen, setResult }: {
         setOpen(true);
         const reUsers = res as unknown as IUser[];
         setResult(reUsers);
-        console.log(res);
       })
       .catch((err) => {
         console.log(err);
@@ -50,7 +50,7 @@ function SearchBox({ setOpen, setResult }: {
         onChange={handleChange}
         size="small"
         id="outlined-basic"
-        label="Outlined"
+        label="User's login..."
         variant="outlined"
       />
       <IconButton
@@ -61,6 +61,14 @@ function SearchBox({ setOpen, setResult }: {
       >
         <SearchIcon />
       </IconButton>
+      <Typography
+        sx={{ marginTop: 5 }}
+        variant="h6"
+        gutterBottom
+        component="div"
+      >
+        {`Room: ${stringId || ''}`}
+      </Typography>
     </Box>
   );
 }

@@ -85,3 +85,14 @@ export const styleMessage = {
     padding: 0,
   },
 };
+
+export const styleTableRow = {
+  '&:last-child td, &:last-child th': { border: 0 },
+};
+
+export const styleButton = {
+  m: 1,
+  maxWidth: '34ch',
+  height: '4ch',
+  width: '100%',
+};

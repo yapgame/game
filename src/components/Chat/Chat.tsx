@@ -1,23 +1,26 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
+import { Button } from '@mui/material';
 import {
   IOUser,
-  IChatProps,
   IConnectProps,
-  IDraw,
+  IUser,
+  IMessages,
+  IChatProps,
 } from 'Interfaces/interfaces';
 import WebSocketService from 'Utils/WebSocket';
 import chat from 'Utils/chatApi';
+import authApi from 'Utils/authApi';
 import { useSelector } from 'react-redux';
-import { selectData } from '../../user/userSlice';
-import { IMessages, selectData as selectMessageData } from '../../chat/messageSlice';
-import PlayerList from './PlayerList';
+import { selectData } from '../../slices/user/userSlice';
+import { selectData as selectMessageData } from '../../slices/chat/messageSlice';
+import PlayerList from '../Game/PlayerList';
 import Inbox from './Inbox';
-import Message from './Messages';
+import Messages from './Messages';
 import SearchBox from './SearchBox';
-import FormDialog from './FormDialog';
-import { styleChatBox, styleChatPaper } from './styles';
+import FormDialog from '../Game/FormDialog';
+import { styleChatBox, styleChatPaper, styleButton } from '../Game/styles';
 
 let conn: WebSocketService;
 
@@ -34,10 +37,17 @@ function Chat({
   const mountedRef = useRef(false);
   const user = useSelector(selectData) as unknown as IOUser;
   const messages = useSelector(selectMessageData) as unknown as IMessages;
+  const [stringId, setStringId] = useState<string|null>(null);
+  const [word, setWord] = useState<string>('Get Word');
 
   const getChatToken = async (id: number) => {
     const { token }: Record<string, string> = await chat.getChatToken({ id });
     return token;
+  };
+
+  const getUser = async (id: number) => {
+    const currenttUser: IUser = await authApi.getUserById(id);
+    return currenttUser;
   };
 
   const connectToChat = (props: IConnectProps) => {
@@ -45,7 +55,7 @@ function Chat({
     conn = new WebSocketService(userId, chatId, chatToken);
   };
 
-  const sendChatMessage = (message: Record<string, string>|IDraw|null|string) => {
+  const sendChatMessage = (message: any) => {
     if (message === null) {
       return;
     }
@@ -60,9 +70,9 @@ function Chat({
 
   useEffect(() => {
     mountedRef.current = true;
-    const stringId: string|null = localStorage.getItem('game');
+    setStringId(localStorage.getItem('game'));
 
-    if (points) {
+    if (points !== null) {
       sendChatMessage(points);
     }
 
@@ -76,22 +86,38 @@ function Chat({
     return () => {
       mountedRef.current = false;
     };
-  }, [points?.currY]);
+  }, [points?.length, stringId]);
+
+  const cards: Array<string> = ['apple', 'book', 'croco', 'dog', 'egg', 'frog', 'giraffe'];
+  const getRandomWord = () => {
+    const index = Math.floor(Math.random() * cards.length);
+    return cards[index];
+  };
+
+  const getWord = () => {
+    const rnd: string = getRandomWord();
+    setWord(rnd);
+  };
 
   return (
     <Box sx={styleChatBox}>
       <Paper elevation={1} sx={styleChatPaper}>
-        <SearchBox setOpen={setOpen} setResult={setResult} />
-        <PlayerList
-          users={users}
-          removeUserFromChat={removeUserFromChat}
-        />
+        <SearchBox setOpen={setOpen} setResult={setResult} stringId={stringId} />
+        <PlayerList users={users} removeUserFromChat={removeUserFromChat} />
       </Paper>
       <Paper>
-        <Message mchat={messages.mchat} />
         <Inbox sendChatMessage={sendChatMessage} />
+        <Button
+          onClick={getWord}
+          variant="outlined"
+          size="large"
+          sx={styleButton}
+          type="submit"
+        >
+          {word}
+        </Button>
+        <Messages getUser={getUser} mchat={messages.mchat} />
       </Paper>
-      <Paper elevation={3} />
       <FormDialog
         open={open}
         result={result}

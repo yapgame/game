@@ -15,3 +15,7 @@ export { IPlayerListProps } from './IPlayerListProps';
 export { IChatProps } from './IChatProps';
 export { IConnectProps } from './IConnectProps';
 export { IDraw } from './IDraw';
+export { IMessage } from './Imessage';
+export { IMessages } from './Imessages';
+export { IChat } from './IChat';
+export { IBrush } from './IBrush';

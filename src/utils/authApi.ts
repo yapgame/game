@@ -111,7 +111,7 @@ const auth = new AuthApi({
   baseUrl: Urls.SHARE.API,
   headers: {
     Accept: 'application/json',
-    mode: 'cors',
+    // mode: 'cors',
     'Content-Type': 'application/json',
   },
 });

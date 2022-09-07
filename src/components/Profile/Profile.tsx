@@ -11,7 +11,7 @@ import { NavLink } from 'react-router-dom';
 import { Urls } from 'Utils/constants';
 import { IOUser } from 'Interfaces/interfaces';
 import FormDialog from './FormDialog';
-import { selectData } from '../../user/userSlice';
+import { selectData } from '../../slices/user/userSlice';
 import { useAvatar } from './useAvatar';
 
 import { styleBox, styleCard, styleNavLink } from './styles';

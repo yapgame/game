@@ -6,7 +6,8 @@ import TableContainer from '@mui/material/TableContainer';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import Container from '@mui/material/Container';
-import { IUser, IPlayerListProps } from 'interfaces/interfaces';
+import { IUser, IPlayerListProps } from 'Interfaces/interfaces';
+import { styleTableRow } from 'Components/Game/styles';
 
 function PlayerList({ users, removeUserFromChat }: IPlayerListProps) {
   return (
@@ -15,10 +16,7 @@ function PlayerList({ users, removeUserFromChat }: IPlayerListProps) {
         <Table sx={{ maxWidth: 250 }} size="small" aria-label="a dense table">
           <TableBody>
             {users.map((row: IUser) => (
-              <TableRow
-                key={row.login}
-                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-              >
+              <TableRow key={row.login} sx={styleTableRow}>
                 <TableCell
                   align="left"
                   onDoubleClick={() => removeUserFromChat(row.id)}

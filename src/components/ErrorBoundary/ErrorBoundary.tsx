@@ -25,6 +25,7 @@ class ErrorBoundary extends Component<Props, State> {
   public render() {
     const { hasError } = this.state;
     const { children } = this.props;
+
     if (hasError) {
       return <Alert severity="error">Sorry.. there was an error</Alert>;
     }
