@@ -3,9 +3,10 @@ import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import IconButton from '@mui/material/IconButton';
 import SendIcon from '@mui/icons-material/Send';
+import { IDraw } from 'interfaces/IDraw';
 
 function Inbox({ sendChatMessage }:
-  { sendChatMessage: (message: Record<string, string>) => void }) {
+  { sendChatMessage: (message: Array<{ content: IDraw }>|Record<string, string>|null) => void }) {
   const [values, setValues] = React.useState({ message: '' });
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {

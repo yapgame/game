@@ -26,5 +26,6 @@ export const Urls = {
   SHARE: {
     FILES: 'https://ya-praktikum.tech/api/v2/resources/',
     API: 'https://ya-praktikum.tech/api/v2',
+    SOCKET_URL: 'wss://ya-praktikum.tech/ws/chats/',
   },
 };

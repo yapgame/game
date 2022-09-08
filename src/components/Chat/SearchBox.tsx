@@ -3,7 +3,7 @@ import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import IconButton from '@mui/material/IconButton';
 import SearchIcon from '@mui/icons-material/Search';
-import auth from 'Utils/authApi';
+import auth from 'Utils/api/authApi';
 import { IUser } from 'Interfaces/IUser';
 import Typography from '@mui/material/Typography';
 

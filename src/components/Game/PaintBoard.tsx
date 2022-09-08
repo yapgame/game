@@ -1,5 +1,5 @@
 import React, { useRef, useEffect } from 'react';
-import { IDraw, IMessages, IBrush } from 'Interfaces/interfaces';
+import { IDraw, IBrush, IMessage } from 'Interfaces/interfaces';
 import { useSelector } from 'react-redux';
 import { selectData as selectMessageData } from '../../slices/chat/messageSlice';
 import { styleCanvas, styleBoxCanvas } from './styles';
@@ -7,8 +7,9 @@ import { styleCanvas, styleBoxCanvas } from './styles';
 function PaintBoard({ setPoints }:
   { setPoints: (p: Array<{content: IDraw }>) => void}) {
   const mountedRef = useRef(false);
-  const messages = useSelector(selectMessageData) as unknown as IMessages;
-  const { mchat } = messages as any;
+  const messages = useSelector(selectMessageData) as unknown;
+  const { mchat } = messages as { mchat: IMessage };
+
   let canvas: HTMLCanvasElement;
   let ctx: CanvasRenderingContext2D;
 
@@ -75,16 +76,7 @@ function PaintBoard({ setPoints }:
         brush.currX = e.clientX - canvas.offsetLeft;
         brush.currY = e.clientY - canvas.offsetTop;
         handleDraw();
-        arr.push({
-          content: {
-            prevX: brush.prevX,
-            prevY: brush.prevY,
-            currX: brush.currX,
-            currY: brush.currY,
-            color: brush.color,
-            size: brush.size,
-          },
-        });
+        arr.push({ content: { ...brush } });
       }
     }
   };
@@ -99,7 +91,7 @@ function PaintBoard({ setPoints }:
     ctx1 = canvas1.getContext('2d')!;
 
     if (!Array.isArray(mchat) && mchat?.id) {
-      const data: Array<{content: IDraw }> = mchat.content;
+      const data = mchat.content as unknown as IMessage;
 
       if (Array.isArray(data)) {
         data.forEach((props: {content: IDraw }) => {
@@ -133,22 +125,17 @@ function PaintBoard({ setPoints }:
 
   return (
     <div style={styleBoxCanvas}>
-      <canvas
-        id="myCanvas"
-        width="400"
-        height="300"
-        style={styleCanvas}
-      >
-        Your browser does not support the canvas element.
-      </canvas>
-      <canvas
-        id="myCanvas1"
-        width="400"
-        height="300"
-        style={styleCanvas}
-      >
-        Your browser does not support the canvas element.
-      </canvas>
+      {['', '1'].map((id: string) => (
+        <canvas
+          key={`canvas${id}`}
+          id={`myCanvas${id}`}
+          width="400"
+          height="300"
+          style={styleCanvas}
+        >
+          Your browser does not support the canvas element.
+        </canvas>
+      ))}
     </div>
   );
 }

@@ -1,7 +1,7 @@
-import { IMessage } from 'Interfaces/interfaces';
+import { IDraw } from 'Interfaces/interfaces';
 
 export interface IMessages {
   mchat: {
-    messages: Array<IMessage>|IMessage,
+    messages: string|Array<{ content: IDraw }>|Record<string, string>|null,
   }
 }

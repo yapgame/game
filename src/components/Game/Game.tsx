@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { IUser } from 'Interfaces/IUser';
-import chats from 'Utils/chatApi';
+import chats from 'Utils/api/chatApi';
 import { Urls } from 'Utils/constants';
 import { IDraw } from 'Interfaces/interfaces';
 import PaintBoard from './PaintBoard';
@@ -62,6 +62,7 @@ function Game() {
 
   const removeUserFromChat = (userId: number) => {
     const usersData: Array<number> = [userId];
+
     chats
       .deleteUser({ users: usersData, chatId: chat.chat.chatId })
       .then((res: Response) => {

@@ -4,7 +4,7 @@ import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
-import chat from 'Utils/chatApi';
+import chat from 'Utils/api/chatApi';
 import { useNavigate } from 'react-router-dom';
 import { Urls } from 'Utils/constants';
 import TextField from '@mui/material/TextField';
@@ -42,9 +42,12 @@ function PageStart() {
     evt.preventDefault();
 
     const { room }: Record<string, string> = values;
-    localStorage.setItem('game', room);
-    dispatch(setChatData(room));
-    navigate(Urls.MAIN.GAME);
+
+    if (room) {
+      localStorage.setItem('game', room);
+      dispatch(setChatData(room));
+      navigate(Urls.MAIN.GAME);
+    }
   };
 
   return (

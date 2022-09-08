@@ -10,6 +10,8 @@ const indexPath = path.join(distPath, 'index.html');
 app.use(express.static(distPath));
 
 app.get('*', (req, res) => {
+  console.log(req);
+  console.log('>>>', req?.originalUrl);
   res.sendFile(path.resolve(indexPath));
 });
 

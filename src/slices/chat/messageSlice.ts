@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { IMessages } from 'Interfaces/interfaces';
+import { IMessages, IMessage } from 'Interfaces/interfaces';
 
-const initialState: IMessages = {
+const initialState: IMessages|IMessage = {
   mchat: {
     messages: [],
   },
@@ -14,6 +14,7 @@ const messageSlice = createSlice({
     setMessagesData: (state, action) => {
       // eslint-disable-next-line no-param-reassign
       state.mchat = action.payload;
+      console.log(state.mchat);
     },
   },
 });

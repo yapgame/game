@@ -1,12 +1,8 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { IUser } from 'Interfaces/interfaces';
-import auth from 'Utils/authApi';
+import { IOUser, IUser } from 'Interfaces/interfaces';
+import auth from 'Utils/api/authApi';
 import { selectData, setUserData } from '../../slices/user/userSlice';
-
-interface IOUser {
-  user: IUser;
-}
 
 function useEditProfile() {
   const dispatch = useDispatch();

@@ -8,5 +8,5 @@ export interface IChatProps {
   addUserToChat: (user: IUser) => void,
   removeUserFromChat: (userId: number) => void,
   users: Array<IUser>,
-  points: Array<{ content: IDraw }>|null,
+  points: string|Array<{ content: IDraw }>|Record<string, string>|null,
 }

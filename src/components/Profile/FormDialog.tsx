@@ -12,6 +12,7 @@ import { IFormDialogProps, IOUser } from 'Interfaces/interfaces';
 import { selectData } from '../../slices/user/userSlice';
 
 import { styleAvatar, styleFormDialogBox, styleFormDialogButton } from './styles';
+import img from '../../images/2.jpg';
 
 export default function FormDialog(props: IFormDialogProps) {
   const { onHandleSubmit } = props;
@@ -50,18 +51,12 @@ export default function FormDialog(props: IFormDialogProps) {
 
   return (
     <div>
-      {
-        avatar !== null && avatar !== undefined
-          ? (
-            <Avatar
-              onClick={handleClickOpen}
-              sx={styleAvatar}
-              alt={login}
-              src={`${Urls.SHARE.FILES}${avatar}`}
-            />
-          )
-          : null
-      }
+      <Avatar
+        onClick={handleClickOpen}
+        sx={styleAvatar}
+        alt={login}
+        src={avatar ? `${Urls.SHARE.FILES}${avatar}` : `${img}`}
+      />
 
       <Dialog open={open} onClose={handleClose}>
         <Box

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import auth from 'Utils/authApi';
+import auth from 'Utils/api/authApi';
 import { IUser } from 'Interfaces/IUser';
 import { setUserData } from '../../slices/user/userSlice';
 

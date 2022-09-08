@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { useSelector } from 'react-redux';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import { Button } from '@mui/material';
@@ -7,12 +8,13 @@ import {
   IConnectProps,
   IUser,
   IMessages,
-  IChatProps,
+  IMessage,
+  IChatProps, IDraw,
 } from 'Interfaces/interfaces';
-import WebSocketService from 'Utils/WebSocket';
-import chat from 'Utils/chatApi';
-import authApi from 'Utils/authApi';
-import { useSelector } from 'react-redux';
+import WebSocketService from 'Utils/api/WebSocket';
+import chat from 'Utils/api/chatApi';
+import authApi from 'Utils/api/authApi';
+import { cards } from 'Utils/arrayCards';
 import { selectData } from '../../slices/user/userSlice';
 import { selectData as selectMessageData } from '../../slices/chat/messageSlice';
 import PlayerList from '../Game/PlayerList';
@@ -55,7 +57,8 @@ function Chat({
     conn = new WebSocketService(userId, chatId, chatToken);
   };
 
-  const sendChatMessage = (message: any) => {
+  // eslint-disable-next-line max-len
+  const sendChatMessage = (message: string|Array<{ content: IDraw }>|Record<string, string>|null) => {
     if (message === null) {
       return;
     }
@@ -66,6 +69,16 @@ function Chat({
         type: 'message',
       });
     }
+  };
+
+  const getRandomWord = () => {
+    const index = Math.floor(Math.random() * cards.length);
+    return cards[index];
+  };
+
+  const getWord = () => {
+    const rnd: string = getRandomWord();
+    setWord(rnd);
   };
 
   useEffect(() => {
@@ -88,35 +101,24 @@ function Chat({
     };
   }, [points?.length, stringId]);
 
-  const cards: Array<string> = ['apple', 'book', 'croco', 'dog', 'egg', 'frog', 'giraffe'];
-  const getRandomWord = () => {
-    const index = Math.floor(Math.random() * cards.length);
-    return cards[index];
-  };
-
-  const getWord = () => {
-    const rnd: string = getRandomWord();
-    setWord(rnd);
-  };
-
   return (
     <Box sx={styleChatBox}>
       <Paper elevation={1} sx={styleChatPaper}>
         <SearchBox setOpen={setOpen} setResult={setResult} stringId={stringId} />
         <PlayerList users={users} removeUserFromChat={removeUserFromChat} />
       </Paper>
-      <Paper>
+      <Paper elevation={1} sx={styleChatPaper}>
         <Inbox sendChatMessage={sendChatMessage} />
         <Button
           onClick={getWord}
           variant="outlined"
-          size="large"
+          size="small"
           sx={styleButton}
           type="submit"
         >
           {word}
         </Button>
-        <Messages getUser={getUser} mchat={messages.mchat} />
+        <Messages getUser={getUser} mchat={messages.mchat as unknown as IMessage} word={word} />
       </Paper>
       <FormDialog
         open={open}

@@ -9,7 +9,7 @@ import {
 
 import { useDispatch } from 'react-redux';
 import { Urls } from 'Utils/constants';
-import auth from 'Utils/authApi';
+import auth from 'Utils/api/authApi';
 import Leaderboard from 'Components/Leaderboard/Leaderboard';
 import PageStart from 'Components/PageStart/PageStart';
 import ResponsiveAppBar from 'Components/ResponsiveAppBar/ResponsiveAppBar';
@@ -38,7 +38,6 @@ function App() {
       .signUp(data)
       .then((res: Response) => {
         navigate(Urls.SIGN.IN);
-        console.log(res);
       })
       .catch((err) => {
         console.log(err);
@@ -48,7 +47,8 @@ function App() {
   const handleSignIn = (data: Record<string, string>) => {
     auth
       .signIn(data)
-      .then(() => {
+      .then((res: Response) => {
+        console.log(res);
         setLoggedIn(true);
       })
       .then(() => {
@@ -57,8 +57,8 @@ function App() {
           .getUser()
           .then((user) => {
             dispatch(setUserData(user));
-            setLoggedIn(true);
-            navigate(Urls.PROFILE.INDEX);
+            // setLoggedIn(true);
+            //  navigate(Urls.PROFILE.INDEX);
           });
       })
       .catch((err) => {

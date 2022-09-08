@@ -9,21 +9,20 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
-import auth from 'Utils/gameApi';
+import auth from 'Utils/api/gameApi';
 import Avatar from '@mui/material/Avatar';
-import { Urls } from 'Utils/constants';
+import { styleAvatar } from 'Components/Leaderboard/styles';
+import img from '../../images/2.jpg';
 
-const styleAvatar = {
-  height: 25,
-  width: 25,
-};
+import { IRow } from './IRow';
 
 function Leaderboard() {
   const mountedRef = useRef(false);
-  const [list, setList] = useState<any>();
+  const [list, setList] = useState<IRow[]>();
 
   useEffect(() => {
     mountedRef.current = true;
+
     auth
       .getLeaderboardByTeam('Sydney', {
         ratingFieldName: 'coins',
@@ -31,8 +30,7 @@ function Leaderboard() {
         limit: 50,
       })
       .then((res: Response) => {
-        setList(res);
-        console.log(res);
+        setList(res as unknown as IRow[]);
       })
       .catch((err) => {
         console.log(err);
@@ -45,9 +43,7 @@ function Leaderboard() {
   return (
     <Container maxWidth="lg">
       <Typography
-        sx={{
-          margin: 2,
-        }}
+        sx={{ margin: 2 }}
         variant="h5"
         gutterBottom
         component="div"
@@ -66,7 +62,7 @@ function Leaderboard() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {list?.map((row: any, index: number) => (
+            {list?.map((row: IRow, index: number) => (
               <TableRow
                 key={index.toString()}
                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
@@ -76,7 +72,7 @@ function Leaderboard() {
                   <Avatar
                     sx={styleAvatar}
                     alt={row?.data.login}
-                    src={`${Urls.SHARE.FILES}${row?.data.avatar}`}
+                    src={row?.data.avatar ? row?.data.avatar : img}
                   />
                 </TableCell>
                 <TableCell align="left">{row?.data.login}</TableCell>

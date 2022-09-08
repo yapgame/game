@@ -57,9 +57,9 @@ export const styleChatPaper = {
   display: 'flex',
   flexWrap: 'wrap',
   '& > :not(style)': {
-    m: 0,
-    margin: 0,
-    padding: 0,
+    m: 1,
+    // margin: 0,
+    // padding: 0,
   },
 };
 
@@ -80,7 +80,7 @@ export const styleMessage = {
   display: 'flex',
   flexWrap: 'wrap',
   '& > :not(style)': {
-    m: 0,
+    m: 2,
     margin: 0,
     padding: 0,
   },
@@ -88,11 +88,12 @@ export const styleMessage = {
 
 export const styleTableRow = {
   '&:last-child td, &:last-child th': { border: 0 },
+  width: '100%',
 };
 
 export const styleButton = {
   m: 1,
-  maxWidth: '34ch',
+  maxWidth: '280px',
   height: '4ch',
   width: '100%',
 };
