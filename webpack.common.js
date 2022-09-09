@@ -8,9 +8,16 @@ module.exports = {
   output: {
     path: path.join(__dirname, '/dist'),
     filename: 'bundle.js',
+    publicPath: '/',
   },
   resolve: {
     extensions: ['.tsx', '.ts', '.js'],
+    alias: {
+      Components: path.resolve(__dirname, './src/components/'),
+      Pages: path.resolve(__dirname, '.src/pages/'),
+      Interfaces: path.resolve(__dirname, '.src/interfaces'),
+      Utils: path.resolve(__dirname, './src/utils/'),
+    },
   },
   module: {
     rules: [
@@ -42,12 +49,9 @@ module.exports = {
     }),
     new MiniCssExtractPlugin(),
   ],
-  devServer: {
-    static: {
-      directory: path.join(__dirname, 'dist'),
-    },
-    historyApiFallback: true,
-    compress: true,
-    port: 3000,
+  performance: {
+    hints: false,
+    maxEntrypointSize: 512000,
+    maxAssetSize: 512000,
   },
 };

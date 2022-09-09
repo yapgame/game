@@ -3,6 +3,7 @@ export const Urls = {
     INDEX: '/',
     TEAM: '/team',
     PLAY: '/play',
+    GAME: '/game',
     LEADERBOARD: '/leaderboard',
   },
   SIGN: {
@@ -10,9 +11,13 @@ export const Urls = {
     UP: '/signup',
     OUT: '/logout',
   },
+  FORUM: {
+    INDEX: '/forum',
+    TOPIC: '/forum/topic/:id',
+  },
   PROFILE: {
     INDEX: '/profile',
-    EDIT: '/profile-edit',
+    EDIT: '/profile/edit',
   },
   ERROR: {
     INTERNAL_SERVER: '/internal-server-error',
@@ -20,5 +25,7 @@ export const Urls = {
   },
   SHARE: {
     FILES: 'https://ya-praktikum.tech/api/v2/resources/',
+    API: 'https://ya-praktikum.tech/api/v2',
+    SOCKET_URL: 'wss://ya-praktikum.tech/ws/chats/',
   },
 };

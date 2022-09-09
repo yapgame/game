@@ -7,12 +7,12 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogTitle from '@mui/material/DialogTitle';
 import Avatar from '@mui/material/Avatar';
-import { Urls } from '../../utils/constants';
-import { selectData } from '../../user/userSlice';
-
-import { IFormDialogProps, IOUser } from '../../interfaces/interfaces';
+import { Urls } from 'Utils/constants';
+import { IFormDialogProps, IOUser } from 'Interfaces/interfaces';
+import { selectData } from '../../slices/user/userSlice';
 
 import { styleAvatar, styleFormDialogBox, styleFormDialogButton } from './styles';
+import img from '../../images/2.jpg';
 
 export default function FormDialog(props: IFormDialogProps) {
   const { onHandleSubmit } = props;
@@ -35,6 +35,7 @@ export default function FormDialog(props: IFormDialogProps) {
 
   const handleSubmit = (evt: React.FormEvent) => {
     evt.preventDefault();
+
     handleClose();
     onHandleSubmit(file!);
   };
@@ -50,18 +51,12 @@ export default function FormDialog(props: IFormDialogProps) {
 
   return (
     <div>
-      {
-        avatar !== null && avatar !== undefined
-          ? (
-            <Avatar
-              onClick={handleClickOpen}
-              sx={styleAvatar}
-              alt={login}
-              src={`${Urls.SHARE.FILES}${avatar}`}
-            />
-          )
-          : null
-      }
+      <Avatar
+        onClick={handleClickOpen}
+        sx={styleAvatar}
+        alt={login}
+        src={avatar ? `${Urls.SHARE.FILES}${avatar}` : `${img}`}
+      />
 
       <Dialog open={open} onClose={handleClose}>
         <Box

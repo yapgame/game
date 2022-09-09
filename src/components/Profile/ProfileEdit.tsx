@@ -5,11 +5,10 @@ import Container from '@mui/material/Container';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import useFormWithValidation from '../../utils/validator';
+import useFormWithValidation from 'Utils/validator';
+import { Urls } from 'Utils/constants';
+import { IValid } from 'Interfaces/interfaces';
 import useEditProfile from './useEditProfile';
-import { Urls } from '../../utils/constants';
-
-import { IValid } from '../../interfaces/interfaces';
 
 import { styleBox, styleNavLink, styleTextField } from './styles';
 
@@ -33,6 +32,7 @@ function ProfileEdit() {
 
   const handleSubmit = (evt: React.FormEvent) => {
     evt.preventDefault();
+
     setUser(values);
   };
 

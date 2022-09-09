@@ -13,10 +13,13 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
+import { IResponsiveAppBar, IUMenu, IOUser } from 'Interfaces/interfaces';
+import { Urls } from 'Utils/constants';
 import { mainMenu } from './mainMenu';
 import { userPrivateMenu } from './userPrivateMenu';
-import { selectData } from '../../user/userSlice';
-import { Urls } from '../../utils/constants';
+import { selectData } from '../../slices/user/userSlice';
+
+import img from '../../images/2.jpg';
 
 import {
   styleNavLink,
@@ -25,8 +28,6 @@ import {
   styleBox,
   styleTypographyH5,
 } from './styles';
-
-import { IResponsiveAppBar, IUMenu, IOUser } from '../../interfaces/interfaces';
 
 function ResponsiveAppBar({ loggedIn, handleSignOut }: IResponsiveAppBar) {
   const mountedRef = useRef(false);
@@ -158,9 +159,11 @@ function ResponsiveAppBar({ loggedIn, handleSignOut }: IResponsiveAppBar) {
               <Box sx={{ flexGrow: 0 }}>
                 <Tooltip title="Open settings">
                   <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                    {avatar !== null && avatar !== undefined
-                      ? (<Avatar alt={login} src={`${Urls.SHARE.FILES}${avatar}`} />)
-                      : null}
+                    <Avatar
+                      alt={login}
+                      // src={avatar !== null && avatar !== undefined ? avatar : img}
+                      src={avatar ? `${Urls.SHARE.FILES}${avatar}` : `${img}`}
+                    />
                   </IconButton>
                 </Tooltip>
                 <Menu

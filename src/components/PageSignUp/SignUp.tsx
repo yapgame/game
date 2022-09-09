@@ -6,10 +6,10 @@ import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import TextField from '@mui/material/TextField';
 import { NavLink } from 'react-router-dom';
-import { Urls } from '../../utils/constants';
-import useFormWithValidation from '../../utils/validator';
+import { Urls } from 'Utils/constants';
+import useFormWithValidation from 'Utils/validator';
 
-import { IValid, ISignUpProps } from '../../interfaces/interfaces';
+import { IValid, ISignUpProps } from 'Interfaces/interfaces';
 
 import {
   styleCard,
@@ -29,6 +29,7 @@ function SignUp({ handleSignUp }: ISignUpProps) {
 
   const handleSubmit = (evt: React.FormEvent) => {
     evt.preventDefault();
+
     handleSignUp(values);
   };
 

@@ -23,21 +23,28 @@ Implemented features:
   - [X] Leaderboard page
   - [ ] Start page
   - [ ] Finish page
+- [ ] Forum
+  - [ ] Forum card
+  - [ ] Forum form
 - [X] User
   - [X] User registration page
   - [X] User authorization page
   - [X] User-info page
     - [ ] User-info edit page
-- [X] Geraral
+- [X] General
   - [X] Routing
   - [X] Validation form
   - [ ] Api
-    - [ ] Auth
+    - [X] Auth
+    - [X] Game
+    - [X] Chat
     - [ ] WebSocket
   - [ ] Store
   - [ ] Canvas mech
 
 ### Demo
+
+[Heroku](http://croco-deadline.herokuapp.com/)
 
 ... here is a picture and a link ...
 

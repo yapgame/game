@@ -1,19 +1,13 @@
 /* eslint-disable class-methods-use-this */
+import { IOption } from 'Interfaces/IOption';
 import { Methods } from './Methods';
-import { IOption } from '../interfaces/IOption';
+import { BaseApi } from './baseApi';
+import { Urls } from './constants';
 
-export class Auth {
-  private options: IOption;
-
+export class AuthApi extends BaseApi {
   constructor(options: IOption) {
+    super(options);
     this.options = options;
-  }
-
-  checkResponse(res: Response) {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject(`Ошибка ${res.status}`);
   }
 
   async signUp(data: Record<string, string>) {
@@ -22,6 +16,7 @@ export class Auth {
       headers: this.options.headers,
       body: JSON.stringify(data),
     });
+
     return res;
   }
 
@@ -32,6 +27,7 @@ export class Auth {
       credentials: 'include',
       body: JSON.stringify(data),
     });
+
     return res;
   }
 
@@ -41,6 +37,7 @@ export class Auth {
       headers: this.options.headers,
       credentials: 'include',
     });
+
     return res;
   }
 
@@ -51,6 +48,7 @@ export class Auth {
       credentials: 'include',
       body: JSON.stringify(data),
     });
+
     return this.checkResponse(res);
   }
 
@@ -62,6 +60,7 @@ export class Auth {
       credentials: 'include',
       body: data,
     });
+
     return this.checkResponse(res);
   }
 
@@ -72,6 +71,7 @@ export class Auth {
       credentials: 'include',
       body: JSON.stringify(data),
     });
+
     return this.checkResponse(res);
   }
 
@@ -81,14 +81,37 @@ export class Auth {
       headers: this.options.headers,
       credentials: 'include',
     });
+
+    return this.checkResponse(res);
+  }
+
+  async getUserById(id: number) {
+    const res = await fetch(`${this.options.baseUrl}/user/${id}`, {
+      method: Methods.GET,
+      headers: this.options.headers,
+      credentials: 'include',
+    });
+
+    return this.checkResponse(res);
+  }
+
+  async findUser({ login }: Record<string, string>) {
+    const res = await fetch(`${this.options.baseUrl}/user/search`, {
+      method: Methods.POST,
+      headers: this.options.headers,
+      credentials: 'include',
+      body: JSON.stringify({ login }),
+    });
+
     return this.checkResponse(res);
   }
 }
 
-const auth = new Auth({
-  baseUrl: 'https://ya-praktikum.tech/api/v2',
+const auth = new AuthApi({
+  baseUrl: Urls.SHARE.API,
   headers: {
     Accept: 'application/json',
+    // mode: 'cors',
     'Content-Type': 'application/json',
   },
 });
